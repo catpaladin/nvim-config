@@ -58,33 +58,40 @@ return packer.startup(function(use)
   -- [[ Dev ]]
   use { 'windwp/nvim-autopairs' } 
   use { 'Yggdroot/indentLine' }
+  use {"ellisonleao/glow.nvim"}
+  use { 'ibhagwan/fzf-lua',
+    -- optional for icon support
+    requires = { 'kyazdani42/nvim-web-devicons' }
+  }
+  use { 'junegunn/fzf', run = './install --bin' }
+
+  -- [[ LSP ]]
+  use 'neovim/nvim-lspconfig'
+  use 'rcarriga/nvim-notify'
+  use 'Shougo/deoplete.nvim'
+  use 'crispgm/nvim-go'       -- golang
+  use 'fatih/vim-go'          -- golang
+  use 'davidhalter/jedi-vim'  -- python
+  use 'hashivim/vim-terraform'                -- terraform
+  use 'juliosueiras/vim-terraform-completion' -- terraform
 
   -- old vim plugins --
   -- {{ General QoL }}
   use 'sheerun/vim-polyglot'    -- syntax support
   use 'voldikss/vim-floaterm'   -- floating window
-  use 'preservim/nerdcommenter' -- better comment/uncomment
   use 'ap/vim-css-color'        -- hex color highlighter
 
   -- {{ Search }}
-  use 'junegunn/fzf'
   use 'mileszs/ack.vim'     -- ack use ripgrep
   use 'jremmen/vim-ripgrep' -- pure ripgrep
   use 'stefandtw/quickfix-reflector.vim' -- quick replace
 
   -- {{ lsp settings and servers }}
-  use 'prabirshrestha/asyncomplete-lsp.vim'
-  use 'prabirshrestha/asyncomplete.vim'
-  use 'prabirshrestha/vim-lsp'
-  use 'mattn/vim-lsp-settings'
-  use 'prabirshrestha/async.vim'
-  use 'Shougo/deoplete.nvim'
-  use 'davidhalter/jedi-vim' -- python
-  use 'fatih/vim-go' -- golang
-
-  -- {{ terraform plugins }}
-  use 'hashivim/vim-terraform'
-  use 'juliosueiras/vim-terraform-completion'
+  --use 'prabirshrestha/asyncomplete-lsp.vim'
+  --use 'prabirshrestha/asyncomplete.vim'
+  --use 'prabirshrestha/vim-lsp'
+  --use 'mattn/vim-lsp-settings'
+  --use 'prabirshrestha/async.vim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
