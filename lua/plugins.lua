@@ -46,11 +46,21 @@ return packer.startup(function(use)
     tag = 'nightly' -- optional, updated every week. (see issue #1193)
   }
 
+  -- [[ Theme ]]
+  use { 'DanilaMihailov/beacon.nvim' }               -- cursor jump
+  use {
+    'nvim-lualine/lualine.nvim',                     -- statusline
+    requires = {'kyazdani42/nvim-web-devicons',
+                opt = true}
+  }
+  use { 'Mofiqul/dracula.nvim' }
+
+  -- [[ Dev ]]
+  use { 'windwp/nvim-autopairs' } 
+  use { 'Yggdroot/indentLine' }
+
   -- old vim plugins --
   -- {{ General QoL }}
-  use 'vim-airline/vim-airline' -- status bar
-  use 'vim-airline/vim-airline-themes'
-  use 'jiangmiao/auto-pairs'    -- autopair brackets
   use 'sheerun/vim-polyglot'    -- syntax support
   use 'voldikss/vim-floaterm'   -- floating window
   use 'preservim/nerdcommenter' -- better comment/uncomment

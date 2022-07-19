@@ -13,3 +13,13 @@ require("nvim-tree").setup({
     group_empty = true,
   },
 })
+
+-- setup lualine
+require('lualine').setup {
+  options = {
+    theme = 'dracula-nvim'
+  }
+}
+
+-- setup autopairs
+require('nvim-autopairs').setup{}
