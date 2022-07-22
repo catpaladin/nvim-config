@@ -9,6 +9,9 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local au = require('utils.au')
+local utils = require('utils.lsp')
+local kb = require('utils.kb')
 local luasnip = require("luasnip")
 local cmp = require('cmp')
 
@@ -59,39 +62,116 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap = true, silent = true }
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+vim.lsp.protocol.CompletionItemKind = {
+  ' (text)',
+  ' (method)',
+  ' (function)',
+  ' (constructor)',
+  'ﰠ (field)',
+  ' (variable)',
+  ' (class)',
+  ' (interface)',
+  ' (module)',
+  ' (property)',
+  ' (unit)',
+  ' (value)',
+  ' (enum)',
+  ' (key)',
+  '﬌ (snippet)',
+  ' (color)',
+  ' (file)',
+  ' (reference)',
+  ' (folder)',
+  ' (enum member)',
+  ' (constant)',
+  ' (struct)',
+  ' (event)',
+  ' (operator)',
+  ' (type)',
+}
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+local signs = {
+  Error = vim.g.diagnostic_icons.Error,
+  Warn = vim.g.diagnostic_icons.Warning,
+  Hint = vim.g.diagnostic_icons.Hint,
+  Info = vim.g.diagnostic_icons.Information,
+}
 
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  { virtual_text = false, update_in_insert = false }
+)
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = vim.g.floating_window_border })
+vim.lsp.handlers['textDocument/formatting'] = utils.format_async
+
+au.augroup('ShowDiagnostics', {
+  {
+    event = 'CursorHold,CursorHoldI',
+    pattern = '*',
+    callback = function()
+      vim.diagnostic.open_float(nil, {
+        focusable = false,
+        border = vim.g.floating_window_border,
+        source = 'if_many',
+      })
+    end,
+  },
+})
+
+local disabled_signature_lsp = {
+  terraformls = true,
+  efm = true,
+  tflint = true,
+  --['null-ls'] = true,
+}
+
+-- on_attach
+local on_attach = function(client, bufnr)
+  require('illuminate').on_attach(client)
+
+  if disabled_signature_lsp[client.name] == nil then
+    require('lsp_signature').on_attach({
+      bind = true,
+      hint_enable = false,
+      hi_parameter = 'CursorLine',
+      handler_opts = { border = 'single' },
+    })
+  end
+
+  --if client.name ~= 'null-ls' then
+  --  client.resolved_capabilities.document_formatting = false
+  --end
+
+  if client.resolved_capabilities.document_formatting then
+    au.augroup('LspFormatOnSave', {
+      {
+        event = 'BufWritePost',
+        pattern = [[<buffer>]],
+        callback = function()
+          vim.lsp.buf.formatting()
+        end,
+      },
+    }, true)
+  end
+
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+
+  buf_set_keymap('n', 'K', '<CMD>lua require("utils.lsp").show_documentation()<CR>', kb.silent_noremap)
+  buf_set_keymap('n', '<leader>rn', '<CMD>lua vim.lsp.buf.rename()<CR>', kb.silent_noremap)
+  buf_set_keymap('n', '<leader>ce', '<CMD>LspRestart<CR>', kb.silent_noremap)
+  buf_set_keymap('n', '<leader>cf', '<CMD>lua vim.lsp.buf.formatting_sync()<CR>', kb.silent_noremap)
+  buf_set_keymap('n', ']g', '<CMD>lua vim.lsp.diagnostic.goto_next()<CR>', kb.silent_noremap)
+  buf_set_keymap('n', '[g', '<CMD>lua vim.lsp.diagnostic.goto_prev()<CR>', kb.silent_noremap)
+end
+
+-- flags
 local lsp_flags = {
   -- This is the default in Nvim 0.7+
   debounce_text_changes = 150,
