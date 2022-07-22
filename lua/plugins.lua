@@ -33,11 +33,12 @@ packer.init({
 
 -- Install your plugins here
 return packer.startup(function(use)
-  -- My plugins here
-  use 'wbthomason/packer.nvim' -- Have packer manage itself
-  use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
-  use "nvim-lua/plenary.nvim" -- Useful lua functions used by lots of plugins
-
+  -- [[ Base plugins ]]
+  use 'wbthomason/packer.nvim'  -- Have packer manage itself
+  use "nvim-lua/popup.nvim"     -- An implementation of the Popup API from vim in Neovim
+  use "nvim-lua/plenary.nvim"   -- Useful lua functions used by lots of plugins
+  use 'voldikss/vim-floaterm'   -- floating window
+  use 'rcarriga/nvim-notify'
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {
@@ -50,15 +51,17 @@ return packer.startup(function(use)
   use { 'DanilaMihailov/beacon.nvim' }               -- cursor jump
   use {
     'nvim-lualine/lualine.nvim',                     -- statusline
-    requires = {'kyazdani42/nvim-web-devicons',
-                opt = true}
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+      opt = true,
+    }
   }
   use { 'Mofiqul/dracula.nvim' }
 
   -- [[ Dev ]]
-  use { 'windwp/nvim-autopairs' } 
-  use { 'Yggdroot/indentLine' }
-  use {"ellisonleao/glow.nvim"}
+  use { 'windwp/nvim-autopairs' }     -- close brackets, etc
+  use { 'Yggdroot/indentLine' }       -- show indents
+  use { 'jremmen/vim-ripgrep' }       -- pure ripgrep
   use { 'ibhagwan/fzf-lua',
     -- optional for icon support
     requires = { 'kyazdani42/nvim-web-devicons' }
@@ -66,32 +69,25 @@ return packer.startup(function(use)
   use { 'junegunn/fzf', run = './install --bin' }
 
   -- [[ LSP ]]
-  use 'neovim/nvim-lspconfig'
-  use 'rcarriga/nvim-notify'
-  use 'Shougo/deoplete.nvim'
-  use 'crispgm/nvim-go'       -- golang
-  use 'fatih/vim-go'          -- golang
-  use 'davidhalter/jedi-vim'  -- python
+  use {
+    "williamboman/nvim-lsp-installer",
+    "neovim/nvim-lspconfig",
+  }
+  use {
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'L3MON4D3/LuaSnip',
+    'saadparwaiz1/cmp_luasnip',
+  }
+  use "folke/lua-dev.nvim"                    -- lua
+  use 'crispgm/nvim-go'                       -- golang
+  use 'fatih/vim-go'                          -- golang
+  use 'davidhalter/jedi-vim'                  -- python
   use 'hashivim/vim-terraform'                -- terraform
   use 'juliosueiras/vim-terraform-completion' -- terraform
-
-  -- old vim plugins --
-  -- {{ General QoL }}
-  use 'sheerun/vim-polyglot'    -- syntax support
-  use 'voldikss/vim-floaterm'   -- floating window
-  use 'ap/vim-css-color'        -- hex color highlighter
-
-  -- {{ Search }}
-  use 'mileszs/ack.vim'     -- ack use ripgrep
-  use 'jremmen/vim-ripgrep' -- pure ripgrep
-  use 'stefandtw/quickfix-reflector.vim' -- quick replace
-
-  -- {{ lsp settings and servers }}
-  --use 'prabirshrestha/asyncomplete-lsp.vim'
-  --use 'prabirshrestha/asyncomplete.vim'
-  --use 'prabirshrestha/vim-lsp'
-  --use 'mattn/vim-lsp-settings'
-  --use 'prabirshrestha/async.vim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
