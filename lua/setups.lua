@@ -24,20 +24,9 @@ require('lualine').setup {
 -- setup autopairs
 require('nvim-autopairs').setup{}
 
--- setup glow
-require('glow').setup({
-  style = "dark",
-  width = 120,
-})
-
 -- setup fzf-lua
 require('fzf-lua').setup{
   winopts = {
     hl = { border = "FloatBorder", }
   }
 }
-
--- setup nvim-lspconfig languages
-require('lspconfig').gopls.setup{}
-require('lspconfig').pyright.setup{}
-require('lspconfig').terraform_lsp.setup{}

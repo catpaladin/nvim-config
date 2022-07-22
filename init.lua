@@ -3,9 +3,10 @@ require("plugins")
 require("keymaps")
 require("options")
 require("setups")
+require("lsp")
 
 -- load plug configs
-for i, vf in pairs(vim.split(vim.fn.glob('$HOME/.config/nvim/plug-config/*.vim'), '\n')) do
+for _, vf in pairs(vim.split(vim.fn.glob('$HOME/.config/nvim/plug-config/*.vim'), '\n')) do
   vim.api.nvim_command('source ' .. vf)
 end
 
