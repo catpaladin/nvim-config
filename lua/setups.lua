@@ -17,15 +17,16 @@ require("nvim-tree").setup({
 -- setup lualine
 require('lualine').setup {
   options = {
-    theme = 'dracula-nvim'
+    --theme = 'dracula-nvim'
+    theme = 'codedark'
   }
 }
 
 -- setup autopairs
-require('nvim-autopairs').setup{}
+require('nvim-autopairs').setup {}
 
 -- setup fzf-lua
-require('fzf-lua').setup{
+require('fzf-lua').setup {
   winopts = {
     hl = { border = "FloatBorder", }
   }

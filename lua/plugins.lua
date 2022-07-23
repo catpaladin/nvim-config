@@ -57,7 +57,8 @@ return packer.startup(function(use)
       opt = true,
     }
   }
-  use { 'Mofiqul/dracula.nvim' }
+  --use { 'Mofiqul/dracula.nvim' }
+  use { 'EdenEast/nightfox.nvim' }
 
   -- [[ Dev ]]
   use { 'windwp/nvim-autopairs' } -- close brackets, etc
