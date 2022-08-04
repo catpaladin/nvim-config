@@ -5,6 +5,10 @@ local term_opts = { silent = true }
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
+--Remap space as leader key
+keymap("", "<Space>", "<Nop>", opts)
+vim.g.mapleader = " "
+
 -- Modes
 --   normal_mode        = "n",
 --   insert_mode        = "i",
@@ -24,9 +28,17 @@ keymap("n", "<C-l>", "<C-w>l", opts)
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
--- Move text up and down
-keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
-keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
+-- Resize with arrows
+keymap("n", "<C-Up>", ":resize -2<CR>", opts)
+keymap("n", "<C-Down>", ":resize +2<CR>", opts)
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+
+-- Clear highlights
+keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
+
+-- Close buffers
+keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 
 -- Nvim-tree
 keymap("n", "<C-n>", ":NvimTreeToggle<CR>", opts)
@@ -40,10 +52,6 @@ keymap("i", "jk", "<ESC>", opts)
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
-
--- Move text up and down
-keymap("v", "<A-j>", ":m .+1<CR>==", opts)
-keymap("v", "<A-k>", ":m .-2<CR>==", opts)
 
 -- Visual Block --
 -- Move text up and down
