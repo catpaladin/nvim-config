@@ -62,7 +62,7 @@ return packer.startup(function(use)
 
   -- [[ Dev ]]
   use { 'windwp/nvim-autopairs' } -- close brackets, etc
-  use { 'Yggdroot/indentLine' } -- show indents
+  use { 'lukas-reineke/indent-blankline.nvim' } -- show indents
   use { 'ray-x/lsp_signature.nvim' } -- show function signature
   use { 'RRethy/vim-illuminate' } -- highlight usage
   use { 'jremmen/vim-ripgrep' } -- pure ripgrep
