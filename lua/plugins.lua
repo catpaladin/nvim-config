@@ -39,6 +39,9 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used by lots of plugins
   use 'voldikss/vim-floaterm' -- floating window
+  use 'akinsho/toggleterm.nvim' -- terminals
+  use "akinsho/bufferline.nvim" -- add buffers
+  use "moll/vim-bbye" -- used to close buffers
   use 'rcarriga/nvim-notify'
   use {
     'kyazdani42/nvim-tree.lua',
