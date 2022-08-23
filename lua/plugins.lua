@@ -61,7 +61,8 @@ return packer.startup(function(use)
     }
   }
   --use { 'Mofiqul/dracula.nvim' }
-  use { 'EdenEast/nightfox.nvim' }
+  --use { 'EdenEast/nightfox.nvim' }
+  use { 'projekt0n/github-nvim-theme' }
 
   -- [[ Dev ]]
   use { 'windwp/nvim-autopairs' } -- close brackets, etc
