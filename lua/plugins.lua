@@ -75,6 +75,10 @@ return packer.startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
   use { 'junegunn/fzf', run = './install --bin' }
+  use {
+    'lewis6991/gitsigns.nvim',
+    tag = 'release'
+  } -- git decorations
 
   -- [[ LSP ]]
   use {
@@ -90,10 +94,10 @@ return packer.startup(function(use)
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
   }
-  use "folke/lua-dev.nvim" -- lua
+  use "folke/neodev.nvim" -- lua
   use 'crispgm/nvim-go' -- golang
   use 'fatih/vim-go' -- golang
-  use 'davidhalter/jedi-vim' -- python
+  --use 'davidhalter/jedi-vim' -- python
   use 'hashivim/vim-terraform' -- terraform
 
   -- Automatically set up your configuration after cloning packer.nvim

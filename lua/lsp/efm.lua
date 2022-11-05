@@ -4,6 +4,7 @@ local sh_fmt = { formatCommand = 'shfmt -i 2', formatStdin = true }
 
 local efm_languages = {
   python = {
+    { formatCommand = 'isort -', formatStdin = true },
     { formatCommand = 'black --fast -', formatStdin = true },
   },
   sh = {

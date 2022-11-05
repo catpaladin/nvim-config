@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup(on_attach, lsp_flags, capabilities)
-  local luadev = require('lua-dev').setup({
+  local luadev = require('neodev').setup({
     lspconfig = {
       on_attach = on_attach,
       flags = lsp_flags,
