@@ -75,26 +75,39 @@ return packer.startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
   use { 'junegunn/fzf', run = './install --bin' }
-  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+  use {
+    'lewis6991/gitsigns.nvim',
+    tag = 'release'
+  } -- git decorations
 
   -- [[ LSP ]]
   use {
-    "williamboman/nvim-lsp-installer",
-    "neovim/nvim-lspconfig",
+      "williamboman/nvim-lsp-installer",
+      "neovim/nvim-lspconfig",
   }
-  use {
-    'hrsh7th/nvim-cmp',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
-    'hrsh7th/cmp-cmdline',
-    'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip',
-  }
-  use "folke/lua-dev.nvim" -- lua
+  use({
+    "hrsh7th/nvim-cmp",
+    requires = {
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
+      { "hrsh7th/cmp-buffer",   after = "nvim-cmp" },
+      { "hrsh7th/cmp-path",     after = "nvim-cmp" },
+      { "hrsh7th/cmp-cmdline",  after = "nvim-cmp" },
+      { "hrsh7th/cmp-calc",     after = "nvim-cmp" },
+      { "lukas-reineke/cmp-rg", after = "nvim-cmp" },
+      { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
+      {
+        "L3MON4D3/LuaSnip",
+        config   = function() require("settings.luasnip") end,
+      },
+      { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
+    },
+    config   = function() require("settings.cmp") end,
+  })
+  use "folke/neodev.nvim" -- lua
   use 'crispgm/nvim-go' -- golang
   use 'fatih/vim-go' -- golang
-  use 'davidhalter/jedi-vim' -- python
+  --use 'davidhalter/jedi-vim' -- python
   use 'hashivim/vim-terraform' -- terraform
 
   -- Automatically set up your configuration after cloning packer.nvim

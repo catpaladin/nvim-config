@@ -1,10 +1,12 @@
 local M = {}
 
-function M.setup(on_attach, lsp_flags, capabilities)
-  require('lspconfig')['gopls'].setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
+local utils = require("settings.lsp.utils")
+
+function M.config()
+  return {
+    on_attach = utils.lsp_attach,
+    capabilities = utils.get_capabilities(),
+    flags = { debounce_text_changes = 150 },
     settings = {
       gopls = {
         analyses = {
@@ -15,7 +17,9 @@ function M.setup(on_attach, lsp_flags, capabilities)
       },
     },
   }
+end
 
+function M.setup()
   require('go').setup({
     -- notify: use nvim-notify
     notify = true,
@@ -51,6 +55,8 @@ function M.setup(on_attach, lsp_flags, capabilities)
     -- quick type
     quick_type_flags = { '--just-types' },
   })
+
+  return M.config()
 end
 
 return M
