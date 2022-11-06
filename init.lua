@@ -2,8 +2,7 @@
 require("plugins")
 require("keymaps")
 require("options")
-require("setups")
-require("lsp")
+require("settings")
 
 -- load plug configs
 for _, vf in pairs(vim.split(vim.fn.glob('$HOME/.config/nvim/plug-config/*.vim'), '\n')) do
