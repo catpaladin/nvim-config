@@ -18,15 +18,21 @@ local efm_languages = {
   },
 }
 
-function M.setup(on_attach, lsp_flags, capabilities)
-  require('lspconfig').efm.setup({
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities,
+local utils = require("settings.lsp.utils")
+
+function M.config()
+  return {
+    on_attach = utils.lsp_attach,
+    capabilities = utils.get_capabilities(),
+    flags = { debounce_text_changes = 150 },
     init_options = { documentFormatting = true },
     filetypes = vim.tbl_keys(efm_languages),
     settings = { rootMarkers = { '.git/' }, languages = efm_languages },
-  })
+  }
+end
+
+function M.setup()
+  return M.config()
 end
 
 return M

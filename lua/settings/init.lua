@@ -1,3 +1,5 @@
+require("settings.lsp")
+require("settings.cmp")
 require("settings.nvim_tree")
 require("settings.github_theme")
 require("settings.lualine")

@@ -1,9 +1,8 @@
 local ls = require("luasnip")
 local types = require("luasnip.util.types")
 
-ls.snippets = {
-  python = require("snippets.python")
-}
+ls.add_snippets("all", require("settings.luasnip.all"))
+ls.add_snippets("python", require("settings.luasnip.python"))
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
