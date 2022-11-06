@@ -85,21 +85,6 @@ return packer.startup(function(use)
       "williamboman/nvim-lsp-installer",
       "neovim/nvim-lspconfig",
   }
-  --use({
-  --  "neovim/nvim-lspconfig",
-  --  requires = { 
-  --    "williamboman/nvim-lsp-installer",
-  --    setup = function()
-  --      require("nvim-lsp-installer").setup({
-  --        automatic_installation = true
-  --      })
-  --    end,
-  --  },
-  --  opt = true,
-  --  config = function()
-  --    require("settings.lsp").setup()
-  --  end,
-  --})
   use({
     "hrsh7th/nvim-cmp",
     requires = {
