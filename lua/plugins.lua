@@ -75,6 +75,7 @@ return packer.startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
   use { 'junegunn/fzf', run = './install --bin' }
+  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
   -- [[ LSP ]]
   use {
