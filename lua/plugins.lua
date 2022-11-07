@@ -82,28 +82,43 @@ return packer.startup(function(use)
 
   -- [[ LSP ]]
   use {
-      "williamboman/nvim-lsp-installer",
-      "neovim/nvim-lspconfig",
+    "williamboman/nvim-lsp-installer",
+    "neovim/nvim-lspconfig",
   }
   use({
     "hrsh7th/nvim-cmp",
     requires = {
       { "hrsh7th/cmp-nvim-lsp" },
       { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
-      { "hrsh7th/cmp-buffer",   after = "nvim-cmp" },
-      { "hrsh7th/cmp-path",     after = "nvim-cmp" },
-      { "hrsh7th/cmp-cmdline",  after = "nvim-cmp" },
-      { "hrsh7th/cmp-calc",     after = "nvim-cmp" },
+      { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+      { "hrsh7th/cmp-path", after = "nvim-cmp" },
+      { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+      { "hrsh7th/cmp-calc", after = "nvim-cmp" },
       { "lukas-reineke/cmp-rg", after = "nvim-cmp" },
       { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
       {
         "L3MON4D3/LuaSnip",
-        config   = function() require("settings.luasnip") end,
+        config = function() require("settings.luasnip") end,
       },
       { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
     },
     config   = function() require("settings.cmp") end,
   })
+  use { "rafamadriz/friendly-snippets" }
+  use {
+    "danymat/neogen",
+    config = function()
+      require('settings.neogen')
+    end,
+    requires = {
+      "nvim-treesitter/nvim-treesitter",
+      config = function()
+        require("nvim-treesitter.configs").setup {
+          ensure_installed = { "python", "go" }
+        }
+      end,
+    },
+  }
   use "folke/neodev.nvim" -- lua
   use 'crispgm/nvim-go' -- golang
   use 'fatih/vim-go' -- golang
