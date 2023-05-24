@@ -72,7 +72,7 @@ end
 -- on_attach
 function M.lsp_attach(client, bufnr)
   M.lsp_config(client, bufnr)
-  M.lsp_highlight(client, bufnr)
+  --M.lsp_highlight(client, bufnr)
   M.lsp_diagnostics()
 end
 

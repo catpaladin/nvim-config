@@ -82,7 +82,9 @@ return packer.startup(function(use)
 
   -- [[ LSP ]]
   use {
-    "williamboman/nvim-lsp-installer",
+    --"williamboman/nvim-lsp-installer", --deprecated
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
   }
   use({
@@ -121,7 +123,7 @@ return packer.startup(function(use)
   }
   use "folke/neodev.nvim" -- lua
   use 'crispgm/nvim-go' -- golang
-  use 'fatih/vim-go' -- golang
+  --use 'fatih/vim-go' -- golang
   --use 'davidhalter/jedi-vim' -- python
   use 'hashivim/vim-terraform' -- terraform
 

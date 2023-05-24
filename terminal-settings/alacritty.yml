@@ -6,7 +6,7 @@ window:
   # (changes require restart)
   dimensions:
     columns: 140
-    lines: 50
+    lines: 30
 
   # Window position (changes require restart)
   #
