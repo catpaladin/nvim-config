@@ -1,5 +1,5 @@
 local lsp_providers = {
-  "sumneko_lua",
+  "lua_ls",
   "pyright",
   "efm",
   "gopls",
@@ -8,7 +8,8 @@ local lsp_providers = {
 }
 
 local lspconfig = require("lspconfig")
-require("nvim-lsp-installer").setup({
+require("mason").setup()
+require("mason-lspconfig").setup({
   automatic_installation = true
 })
 

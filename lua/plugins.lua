@@ -62,7 +62,8 @@ return packer.startup(function(use)
   }
   --use { 'Mofiqul/dracula.nvim' }
   --use { 'EdenEast/nightfox.nvim' }
-  use { 'projekt0n/github-nvim-theme' }
+  --use { 'projekt0n/github-nvim-theme' }
+  use { "folke/tokyonight.nvim" }
 
   -- [[ Dev ]]
   use { 'windwp/nvim-autopairs' } -- close brackets, etc
@@ -75,14 +76,11 @@ return packer.startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
   use { 'junegunn/fzf', run = './install --bin' }
-  use {
-    'lewis6991/gitsigns.nvim',
-    tag = 'release'
-  } -- git decorations
 
   -- [[ LSP ]]
   use {
-    "williamboman/nvim-lsp-installer",
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
   }
   use({
@@ -121,7 +119,7 @@ return packer.startup(function(use)
   }
   use "folke/neodev.nvim" -- lua
   use 'crispgm/nvim-go' -- golang
-  use 'fatih/vim-go' -- golang
+  --use 'fatih/vim-go' -- golang
   --use 'davidhalter/jedi-vim' -- python
   use 'hashivim/vim-terraform' -- terraform
 
