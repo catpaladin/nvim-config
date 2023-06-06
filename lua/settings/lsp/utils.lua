@@ -51,15 +51,15 @@ function M.lsp_config(client, bufnr)
   }
 
   -- fmt on write w/ lsp
-  au.augroup('LspFormatOnSave', {
-    {
-      event = 'BufWritePost',
-      pattern = [[<buffer>]],
-      callback = function()
-        vim.lsp.buf.formatting()
-      end,
-    },
-  }, true)
+  --au.augroup('LspFormatOnSave', {
+  --  {
+  --    event = 'BufWritePost',
+  --    pattern = [[<buffer>]],
+  --    callback = function()
+  --      vim.lsp.buf.formatting()
+  --    end,
+  --  },
+  --}, true)
 
   kb.buf_set_keymap('n', 'K', '<CMD>lua require("utils.lsp").show_documentation()<CR>', kb.silent_noremap)
   kb.buf_set_keymap('n', '[r', '<CMD>lua vim.lsp.buf.rename()<CR>', kb.silent_noremap)
