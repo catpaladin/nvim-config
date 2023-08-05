@@ -10,7 +10,11 @@ function M.config()
       settings = {
         Lua = {
           runtime = {
-            version = 'LuaJIT',
+            version = 'Lua 5.3',
+          },
+          path = {
+            "?.lua",
+            "?/init.lua"
           },
           completion = {
             callSnippet = 'Replace',

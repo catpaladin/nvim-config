@@ -17,7 +17,6 @@ function M.lsp_diagnostics()
 
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded",
   })
-
 end
 
 function M.lsp_highlight(client, bufnr)
@@ -51,15 +50,18 @@ function M.lsp_config(client, bufnr)
   }
 
   -- fmt on write w/ lsp
-  au.augroup('LspFormatOnSave', {
-    {
-      event = 'BufWritePost',
-      pattern = [[<buffer>]],
-      callback = function()
-        vim.lsp.buf.formatting()
-      end,
-    },
-  }, true)
+  vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+  vim.cmd [[autocmd BufWritePost * FormatWriteLock]]
+  --vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({}, 1000)]]
+  --au.augroup('LspFormatOnSave', {
+  --  {
+  --    event = 'BufWritePost',
+  --    pattern = [[<buffer>]],
+  --    callback = function()
+  --      vim.lsp.buf.formatting()
+  --    end,
+  --  },
+  --}, true)
 
   kb.buf_set_keymap('n', 'K', '<CMD>lua require("utils.lsp").show_documentation()<CR>', kb.silent_noremap)
   kb.buf_set_keymap('n', '[r', '<CMD>lua vim.lsp.buf.rename()<CR>', kb.silent_noremap)
@@ -72,7 +74,7 @@ end
 -- on_attach
 function M.lsp_attach(client, bufnr)
   M.lsp_config(client, bufnr)
-  M.lsp_highlight(client, bufnr)
+  --M.lsp_highlight(client, bufnr)
   M.lsp_diagnostics()
 end
 

@@ -1,5 +1,5 @@
 shell:
-  program: tmux
+  program: /usr/bin/tmux
 
 window:
   # Window dimensions in character columns and lines
@@ -72,7 +72,7 @@ font:
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
-  use_thin_strokes: true
+  #use_thin_strokes: true
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: true
