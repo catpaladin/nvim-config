@@ -117,7 +117,7 @@ return packer.startup(function(use)
   }
   use "folke/neodev.nvim" -- lua
   use 'crispgm/nvim-go' -- golang
-  use 'fatih/vim-go' -- golang
+  --use 'fatih/vim-go' -- golang
   --use 'davidhalter/jedi-vim' -- python
   use 'hashivim/vim-terraform' -- terraform
 
