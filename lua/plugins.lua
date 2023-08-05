@@ -60,9 +60,6 @@ return packer.startup(function(use)
       opt = true,
     }
   }
-  --use { 'Mofiqul/dracula.nvim' }
-  --use { 'EdenEast/nightfox.nvim' }
-  --use { 'projekt0n/github-nvim-theme' }
   use { "folke/tokyonight.nvim" }
 
   -- [[ Dev ]]
@@ -83,6 +80,7 @@ return packer.startup(function(use)
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
   }
+  use { "mhartington/formatter.nvim" } -- for lang formatting
   use({
     "hrsh7th/nvim-cmp",
     requires = {

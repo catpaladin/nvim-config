@@ -2,6 +2,15 @@ local M = {}
 
 local sh_fmt = { formatCommand = 'shfmt -i 2', formatStdin = true }
 
+local eslint = {
+  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+  lintStdin = true,
+  lintFormats = { "%f:%l:%c: %m" },
+  lintIgnoreExitCode = true,
+  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+  formatStdin = true
+}
+
 local efm_languages = {
   python = {
     { formatCommand = 'isort -', formatStdin = true },
@@ -16,6 +25,12 @@ local efm_languages = {
       lintSource = 'shellcheck',
     },
   },
+  javascript = { eslint },
+  javascriptreact = { eslint },
+  ["javascript.jsx"] = { eslint },
+  typescript = { eslint },
+  ["typescript.tsx"] = { eslint },
+  typescriptreact = { eslint },
 }
 
 local utils = require("settings.lsp.utils")

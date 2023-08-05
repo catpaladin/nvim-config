@@ -1,5 +1,5 @@
 shell:
-  program: tmux
+  program: /usr/bin/tmux
 
 window:
   # Window dimensions in character columns and lines
