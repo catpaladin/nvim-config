@@ -35,26 +35,26 @@ packer.init({
 -- Install your plugins here
 return packer.startup(function(use)
   -- [[ Base plugins ]]
-  use 'wbthomason/packer.nvim' -- Have packer manage itself
-  use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
-  use "nvim-lua/plenary.nvim" -- Useful lua functions used by lots of plugins
-  use 'voldikss/vim-floaterm' -- floating window
+  use 'wbthomason/packer.nvim'  -- Have packer manage itself
+  use "nvim-lua/popup.nvim"     -- An implementation of the Popup API from vim in Neovim
+  use "nvim-lua/plenary.nvim"   -- Useful lua functions used by lots of plugins
+  use 'voldikss/vim-floaterm'   -- floating window
   use 'akinsho/toggleterm.nvim' -- terminals
   use "akinsho/bufferline.nvim" -- add buffers
-  use "moll/vim-bbye" -- used to close buffers
+  use "moll/vim-bbye"           -- used to close buffers
   use 'rcarriga/nvim-notify'
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {
       'kyazdani42/nvim-web-devicons', -- optional, for file icons
     },
-    tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    tag = 'nightly'                   -- optional, updated every week. (see issue #1193)
   }
 
   -- [[ Theme ]]
   use { 'DanilaMihailov/beacon.nvim' } -- cursor jump
   use {
-    'nvim-lualine/lualine.nvim', -- statusline
+    'nvim-lualine/lualine.nvim',       -- statusline
     requires = {
       'kyazdani42/nvim-web-devicons',
       opt = true,
@@ -63,11 +63,11 @@ return packer.startup(function(use)
   use { "folke/tokyonight.nvim" }
 
   -- [[ Dev ]]
-  use { 'windwp/nvim-autopairs' } -- close brackets, etc
+  use { 'windwp/nvim-autopairs' }               -- close brackets, etc
   use { 'lukas-reineke/indent-blankline.nvim' } -- show indents
-  use { 'ray-x/lsp_signature.nvim' } -- show function signature
-  use { 'RRethy/vim-illuminate' } -- highlight usage
-  use { 'jremmen/vim-ripgrep' } -- pure ripgrep
+  use { 'ray-x/lsp_signature.nvim' }            -- show function signature
+  use { 'RRethy/vim-illuminate' }               -- highlight usage
+  use { 'jremmen/vim-ripgrep' }                 -- pure ripgrep
   use { 'ibhagwan/fzf-lua',
     -- optional for icon support
     requires = { 'kyazdani42/nvim-web-devicons' }
@@ -85,12 +85,12 @@ return packer.startup(function(use)
     "hrsh7th/nvim-cmp",
     requires = {
       { "hrsh7th/cmp-nvim-lsp" },
-      { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
-      { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-      { "hrsh7th/cmp-path", after = "nvim-cmp" },
-      { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
-      { "hrsh7th/cmp-calc", after = "nvim-cmp" },
-      { "lukas-reineke/cmp-rg", after = "nvim-cmp" },
+      { "hrsh7th/cmp-nvim-lua",                after = "nvim-cmp" },
+      { "hrsh7th/cmp-buffer",                  after = "nvim-cmp" },
+      { "hrsh7th/cmp-path",                    after = "nvim-cmp" },
+      { "hrsh7th/cmp-cmdline",                 after = "nvim-cmp" },
+      { "hrsh7th/cmp-calc",                    after = "nvim-cmp" },
+      { "lukas-reineke/cmp-rg",                after = "nvim-cmp" },
       { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
       {
         "L3MON4D3/LuaSnip",
@@ -116,7 +116,7 @@ return packer.startup(function(use)
     },
   }
   use "folke/neodev.nvim" -- lua
-  use 'crispgm/nvim-go' -- golang
+  use 'crispgm/nvim-go'   -- golang
   --use 'fatih/vim-go' -- golang
   --use 'davidhalter/jedi-vim' -- python
   use 'hashivim/vim-terraform' -- terraform
