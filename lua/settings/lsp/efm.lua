@@ -13,7 +13,7 @@ local eslint = {
 
 local efm_languages = {
   python = {
-    { formatCommand = 'isort -', formatStdin = true },
+    { formatCommand = 'isort -',        formatStdin = true },
     { formatCommand = 'black --fast -', formatStdin = true },
   },
   sh = {
@@ -24,6 +24,10 @@ local efm_languages = {
       lintFormats = { '%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m' },
       lintSource = 'shellcheck',
     },
+  },
+  go = {
+    { formatCommand = 'goimports-reviser -rm-unused -set-alias -format -', formatStdin = true },
+    { formatCommand = 'golines -',                                         formatStdin = true },
   },
   javascript = { eslint },
   javascriptreact = { eslint },
