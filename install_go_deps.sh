@@ -6,3 +6,4 @@ go install mvdan.cc/gofumpt@latest
 go install -v github.com/incu6us/goimports-reviser/v3@latest
 go install github.com/cweill/gotests/gotests@latest
 go install golang.org/x/tools/cmd/godoc@latest
+go install github.com/go-delve/delve/cmd/dlv@v1.21.0

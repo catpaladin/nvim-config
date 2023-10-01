@@ -73,6 +73,13 @@ return packer.startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
   use { 'junegunn/fzf', run = './install --bin' }
+  use { 'leoluz/nvim-dap-go', -- debugger for go
+    requires = { 'mfussenegger/nvim-dap' }
+  }
+  use { "rcarriga/nvim-dap-ui", -- debugger ui
+    requires = { "mfussenegger/nvim-dap" }
+  }
+  use 'theHamsta/nvim-dap-virtual-text' -- debugger text
 
   -- [[ LSP ]]
   use {
