@@ -2,20 +2,30 @@ local M = {}
 
 function M.lsp_diagnostics()
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
+    virtual_text = false,
     underline = true,
     signs = true,
-    update_in_insert = false,
+    update_in_insert = true,
+    float = {
+      border = 'rounded',
+      source = 'always',
+      header = '',
+      prefix = '',
+    },
   })
 
   local on_references = vim.lsp.handlers["textDocument/references"]
-  vim.lsp.handlers["textDocument/references"] = vim.lsp.with(on_references, { loclist = true, virtual_text = true })
+  vim.lsp.handlers["textDocument/references"] = vim.lsp.with(on_references, {
+    loclist = true,
+    virtual_text = true,
+  })
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "rounded",
   })
 
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded",
+  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = "rounded",
   })
 end
 
