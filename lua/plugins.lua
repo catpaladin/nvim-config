@@ -117,7 +117,12 @@ return packer.startup(function(use)
       "nvim-treesitter/nvim-treesitter",
       config = function()
         require("nvim-treesitter.configs").setup {
-          ensure_installed = { "python", "go" }
+          ensure_installed = {
+            "python",
+            "go",
+            "rust",
+            "toml",
+          }
         }
       end,
     },
@@ -126,7 +131,8 @@ return packer.startup(function(use)
   use 'crispgm/nvim-go'   -- golang
   --use 'fatih/vim-go' -- golang
   --use 'davidhalter/jedi-vim' -- python
-  use 'hashivim/vim-terraform' -- terraform
+  use 'hashivim/vim-terraform'   -- terraform
+  use 'simrat39/rust-tools.nvim' -- rust
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

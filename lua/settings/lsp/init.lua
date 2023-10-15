@@ -1,10 +1,10 @@
 local lsp_providers = {
   "lua_ls",
   "pyright",
-  --"efm",
   "gopls",
   "terraformls",
   "yamlls",
+  "rust_analyzer",
 }
 
 local lspconfig = require("lspconfig")
@@ -30,7 +30,6 @@ require('formatter').setup(
             exe = "isort",
             args = {
               "--quiet",
-              "-"
             },
             stdin = true
           }
@@ -40,7 +39,27 @@ require('formatter').setup(
             exe = "black",
             args = {
               "--fast",
-              "-"
+            },
+            stdin = true
+          }
+        end,
+      },
+      go = {
+        function()
+          return {
+            exe = "golines",
+            stdin = true
+          }
+        end,
+        function()
+          return {
+            exe = "goimports-reviser",
+            args = {
+              "-imports-order",
+              "std,general,company,project,blanked,dotted",
+              "-rm-unused",
+              "-set-alias",
+              "-format",
             },
             stdin = true
           }
