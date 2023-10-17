@@ -44,6 +44,16 @@ keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 keymap("n", "<C-n>", ":NvimTreeToggle<CR>", opts)
 keymap("n", "<C-b>", ":NvimTreeRefresh<CR>", opts)
 
+-- Dap debugger
+keymap("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", opts)
+keymap("n", "<leader>dw", ":lua require('dapui').toggle()<CR>", opts)
+keymap("n", "<leader>dt", ":lua require('dap-go').debug_test()<CR>", opts)
+keymap("n", "<leader>dlt", ":lua require('dap-go').debug_last_test()<CR>", opts)
+
+-- Format
+keymap("n", "<leader>f", ":Format<CR>", opts)
+keymap("n", "<leader>F", ":FormatWrite<CR>", opts)
+
 -- Insert --
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)

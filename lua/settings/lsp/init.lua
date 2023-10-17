@@ -1,7 +1,6 @@
 local lsp_providers = {
   "lua_ls",
   "pyright",
-  --"efm",
   "gopls",
   "terraformls",
   "yamlls",
@@ -25,24 +24,51 @@ require('formatter').setup(
     log_level = vim.log.levels.WARN,
     filetype = {
       python = {
+        require("formatter.filetypes.python").isort(),
+        require("formatter.filetypes.python").black(),
+        --function()
+        --  return {
+        --    exe = "isort",
+        --    args = {
+        --      "--quiet",
+        --      "-"
+        --    },
+        --    stdin = true
+        --  }
+        --end,
+        --function()
+        --  return {
+        --    exe = "black",
+        --    args = {
+        --      "--fast",
+        --      "-"
+        --    },
+        --    stdin = true
+        --  }
+        --end,
+      },
+      go = {
         function()
           return {
-            exe = "isort",
+            exe = "golines",
             args = {
-              "--quiet",
-              "-"
+              "-",
             },
-            stdin = true
+            stdin = true,
           }
         end,
         function()
           return {
-            exe = "black",
+            exe = "goimports-reviser",
             args = {
-              "--fast",
-              "-"
+              "-imports-order",
+              "std,general,company,project,blanked,dotted",
+              "-rm-unused",
+              "-set-alias",
+              "-format",
+              "-",
             },
-            stdin = true
+            stdin = true,
           }
         end,
       },

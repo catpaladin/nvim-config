@@ -1,5 +1,5 @@
-#shell:
-#  program: tmux
+shell:
+  program: /opt/homebrew/bin/tmux
 
 window:
   # Window dimensions in character columns and lines
@@ -31,7 +31,7 @@ window:
   #- none: Neither borders nor title bar
   #- buttonless: Title bar, transparent background and title bar buttons
   #- transparent: Title bar, transparent background, but no title bar buttons
-  decorations: none
+  decorations: full
 
   # When true, alacritty starts maximized.
   startup_mode: Windowed
@@ -86,7 +86,7 @@ schemes:
     cursor:
       text: '#F81CE5'
       cursor: '#ffffff'
-      
+
     # Normal colors
     normal:
       black:   '#000000'
@@ -186,7 +186,7 @@ schemes:
       blue:    '0x1BA6FA'
       magenta: '0xA578EA'
       cyan:    '0x73FBF1'
-      white:   '0xFEFEF8' 
+      white:   '0xFEFEF8'
 
 colors: *dracula
 
@@ -204,3 +204,4 @@ key_bindings:
   - { key: NumpadAdd,    mods: Control,         action: IncreaseFontSize       }
   - { key: NumpadSubtract,  mods: Control,         action: DecreaseFontSize       }
   - { key: Q,      mods: Control|Shift,   action: Quit                   }
+

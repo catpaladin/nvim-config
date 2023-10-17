@@ -7,6 +7,10 @@ local efm_languages = {
     { formatCommand = 'isort -',        formatStdin = true },
     { formatCommand = 'black --fast -', formatStdin = true },
   },
+  go = {
+    --{ formatCommand = 'goimports-reviser -rm-unused -set-alias -format', formatStdin = true },
+    --{ formatCommand = 'golines', formatStdin = true },
+  },
 }
 --  sh = {
 --    sh_fmt,

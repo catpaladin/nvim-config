@@ -14,6 +14,7 @@ function M.config()
           unusedvariable = true,
         },
         usePlaceholders = true,
+        completeUnimported = true,
       },
     },
   }
@@ -33,7 +34,7 @@ function M.setup()
     -- lint_prompt_style: qf (quickfix), vt (virtual text)
     lint_prompt_style = 'qf',
     -- formatter: goimports, gofmt, gofumpt
-    formatter = 'goimports',
+    formatter = 'gofumpt',
     -- maintain cursor position after formatting loaded buffer
     maintain_cursor_pos = false,
     -- test flags: -count=1 will disable cache

@@ -2,10 +2,16 @@ local M = {}
 
 function M.lsp_diagnostics()
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
+    virtual_text = false,
     underline = true,
     signs = true,
-    update_in_insert = false,
+    update_in_insert = true,
+    float = {
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
+    },
   })
 
   local on_references = vim.lsp.handlers["textDocument/references"]
@@ -51,7 +57,7 @@ function M.lsp_config(client, bufnr)
 
   -- fmt on write w/ lsp
   vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
-  vim.cmd [[autocmd BufWritePost * FormatWriteLock]]
+  --vim.cmd [[autocmd BufWritePost * FormatWriteLock]]
   --vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({}, 1000)]]
   --au.augroup('LspFormatOnSave', {
   --  {
