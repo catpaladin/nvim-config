@@ -77,7 +77,3 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 -- Menu navigation
 keymap("c", "<C-j>", 'pumvisible() ? "\\<C-n>" : "\\<C-j>"', { expr = true, noremap = true })
 keymap("c", "<C-k>", 'pumvisible() ? "\\<C-p>" : "\\<C-k>"', { expr = true, noremap = true })
-
--- Search --
-keymap("n", "F", ":FzfLua files<CR>", opts)
-keymap("n", "R", ":Rg ", opts)
