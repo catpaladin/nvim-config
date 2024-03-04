@@ -105,6 +105,9 @@ return packer.startup(function(use)
     },
     config   = function() require("settings.cmp") end,
   })
+  use { 'Exafunction/codeium.vim' } -- code complete AI
+
+  -- [[ Languages ]]
   use { "rafamadriz/friendly-snippets" }
   use {
     "danymat/neogen",
