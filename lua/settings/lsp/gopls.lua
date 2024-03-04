@@ -28,7 +28,7 @@ function M.setup()
     auto_format = true,
     auto_lint = true,
     -- linters: revive, errcheck, staticcheck, golangci-lint
-    linter = 'revive',
+    linter = 'golangci-lint',
     -- linter_flags: e.g., {revive = {'-config', '/path/to/config.yml'}}
     linter_flags = {},
     -- lint_prompt_style: qf (quickfix), vt (virtual text)

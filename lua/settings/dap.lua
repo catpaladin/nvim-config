@@ -10,10 +10,6 @@ require('dap-go').setup {
       name = "Attach remote",
       mode = "remote",
       request = "attach",
-      --connect = {
-      --  host = "127.0.0.1",
-      --  port = "43000"
-      --}
       connect = {
         host = "127.0.0.1",
         port = "${port}"
@@ -21,14 +17,11 @@ require('dap-go').setup {
     },
   },
   delve = {
-    path = "/Users/msahari/.goenv/shims/dlv",
+    path = "dlv",
     initialize_timeout_sec = 30,
-    --port = "43000",
     port = "${port}",
     args = {
       "--log",
-      "--log-dest",
-      "/tmp/dlv_log",
     },
   },
 }

@@ -38,7 +38,6 @@ return packer.startup(function(use)
   use 'wbthomason/packer.nvim'  -- Have packer manage itself
   use "nvim-lua/popup.nvim"     -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim"   -- Useful lua functions used by lots of plugins
-  use 'voldikss/vim-floaterm'   -- floating window
   use 'akinsho/toggleterm.nvim' -- terminals
   use "akinsho/bufferline.nvim" -- add buffers
   use "moll/vim-bbye"           -- used to close buffers
@@ -60,9 +59,6 @@ return packer.startup(function(use)
       opt = true,
     }
   }
-  --use { 'Mofiqul/dracula.nvim' }
-  --use { 'EdenEast/nightfox.nvim' }
-  --use { 'projekt0n/github-nvim-theme' }
   use { "folke/tokyonight.nvim" }
 
   -- [[ Dev ]]
@@ -70,20 +66,19 @@ return packer.startup(function(use)
   use { 'lukas-reineke/indent-blankline.nvim' } -- show indents
   use { 'ray-x/lsp_signature.nvim' }            -- show function signature
   use { 'RRethy/vim-illuminate' }               -- highlight usage
-  use { 'jremmen/vim-ripgrep' }                 -- pure ripgrep
-  use { 'ibhagwan/fzf-lua',
-    -- optional for icon support
-    requires = { 'kyazdani42/nvim-web-devicons' }
-  }
-  use { 'junegunn/fzf', run = './install --bin' }
-  use { 'leoluz/nvim-dap-go', -- debugger for go
+  use { 'leoluz/nvim-dap-go',                   -- debugger for go
     requires = { 'mfussenegger/nvim-dap' }
   }
-  use { "rcarriga/nvim-dap-ui", -- debugger ui
+  use { "rcarriga/nvim-dap-ui",
     requires = { "mfussenegger/nvim-dap" }
-  }
+  }                                     -- debugger ui
   use 'theHamsta/nvim-dap-virtual-text' -- debugger text
   use 'mfussenegger/nvim-dap-python'    -- debugger for python
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.5',
+    requires = { { 'nvim-lua/plenary.nvim' } }
+  }                                                 -- fuzzy find
+  use { 'nvim-telescope/telescope-ui-select.nvim' } -- telescope ui
 
   -- [[ LSP ]]
   use {
@@ -111,6 +106,9 @@ return packer.startup(function(use)
     },
     config   = function() require("settings.cmp") end,
   })
+  use { 'Exafunction/codeium.vim' } -- code complete AI
+
+  -- [[ Languages ]]
   use { "rafamadriz/friendly-snippets" }
   use {
     "danymat/neogen",
@@ -121,15 +119,20 @@ return packer.startup(function(use)
       "nvim-treesitter/nvim-treesitter",
       config = function()
         require("nvim-treesitter.configs").setup {
-          ensure_installed = { "python", "go" }
+          ensure_installed = {
+            "python",
+            "go",
+            "rust",
+            "toml",
+          }
         }
       end,
     },
   }
-  use "folke/neodev.nvim"      -- lua
-  use 'crispgm/nvim-go'        -- golang
-  --use 'davidhalter/jedi-vim' -- python
-  use 'hashivim/vim-terraform' -- terraform
+  use "folke/neodev.nvim"        -- lua
+  use 'crispgm/nvim-go'          -- golang
+  use 'hashivim/vim-terraform'   -- terraform
+  use 'simrat39/rust-tools.nvim' -- rust
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
