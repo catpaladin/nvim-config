@@ -48,7 +48,10 @@ require('formatter').setup(
         function()
           return {
             exe = "golines",
-            stdin = true
+            args = {
+              "-",
+            },
+            stdin = true,
           }
         end,
         function()
@@ -60,8 +63,9 @@ require('formatter').setup(
               "-rm-unused",
               "-set-alias",
               "-format",
+              "-",
             },
-            stdin = true
+            stdin = true,
           }
         end,
       },

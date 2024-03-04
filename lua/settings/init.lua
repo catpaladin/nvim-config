@@ -8,4 +8,7 @@ require("settings.indent")
 require("settings.toggleterm")
 require("settings.bufferline")
 require("settings.dap")
+<<<<<<< HEAD
 require("settings.telescope")
+=======
+>>>>>>> osx

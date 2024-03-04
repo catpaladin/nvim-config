@@ -7,10 +7,10 @@ function M.lsp_diagnostics()
     signs = true,
     update_in_insert = true,
     float = {
-      border = 'rounded',
-      source = 'always',
-      header = '',
-      prefix = '',
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
     },
   })
 

@@ -1,5 +1,8 @@
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+
 require("dapui").setup()
 require("nvim-dap-virtual-text").setup()
+
 require('dap-go').setup {
   dap_configurations = {
     {
@@ -9,14 +12,14 @@ require('dap-go').setup {
       request = "attach",
       connect = {
         host = "127.0.0.1",
-        port = "43000"
+        port = "${port}"
       }
     },
   },
   delve = {
     path = "dlv",
     initialize_timeout_sec = 30,
-    port = "43000",
+    port = "${port}",
     args = {
       "--log",
     },

@@ -113,7 +113,6 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   { virtual_text = false, update_in_insert = false }
 )
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-  --border = vim.g.floating_window_border,
   border = "rounded",
 })
 vim.lsp.handlers['textDocument/formatting'] = utils.format_async
@@ -125,7 +124,6 @@ au.augroup('ShowDiagnostics', {
     callback = function()
       vim.diagnostic.open_float(nil, {
         focusable = false,
-        --border = vim.g.floating_window_border,
         border = "rounded",
         source = 'if_many',
       })

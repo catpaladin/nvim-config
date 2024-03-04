@@ -1,12 +1,12 @@
 shell:
-  program: /usr/bin/tmux
+  program: /opt/homebrew/bin/tmux
 
 window:
   # Window dimensions in character columns and lines
   # (changes require restart)
   dimensions:
     columns: 140
-    lines: 50
+    lines: 30
 
   # Window position (changes require restart)
   #
@@ -31,7 +31,7 @@ window:
   #- none: Neither borders nor title bar
   #- buttonless: Title bar, transparent background and title bar buttons
   #- transparent: Title bar, transparent background, but no title bar buttons
-  decorations: none
+  decorations: full
 
   # When true, alacritty starts maximized.
   startup_mode: Windowed
@@ -54,7 +54,7 @@ font:
     style: Italic
 
   # Point size of the font
-  size: 11.0
+  size: 13.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -72,7 +72,7 @@ font:
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
-  #use_thin_strokes: true
+  AppleFontSmoothing: true
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: true
@@ -86,7 +86,7 @@ schemes:
     cursor:
       text: '#F81CE5'
       cursor: '#ffffff'
-      
+
     # Normal colors
     normal:
       black:   '#000000'
@@ -186,7 +186,7 @@ schemes:
       blue:    '0x1BA6FA'
       magenta: '0xA578EA'
       cyan:    '0x73FBF1'
-      white:   '0xFEFEF8' 
+      white:   '0xFEFEF8'
 
 colors: *dracula
 
@@ -204,3 +204,4 @@ key_bindings:
   - { key: NumpadAdd,    mods: Control,         action: IncreaseFontSize       }
   - { key: NumpadSubtract,  mods: Control,         action: DecreaseFontSize       }
   - { key: Q,      mods: Control|Shift,   action: Quit                   }
+

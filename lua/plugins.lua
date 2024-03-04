@@ -73,6 +73,7 @@ return packer.startup(function(use)
     requires = { "mfussenegger/nvim-dap" }
   }                                     -- debugger ui
   use 'theHamsta/nvim-dap-virtual-text' -- debugger text
+  use 'mfussenegger/nvim-dap-python'    -- debugger for python
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.5',
     requires = { { 'nvim-lua/plenary.nvim' } }
