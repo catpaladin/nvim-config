@@ -24,28 +24,28 @@ require('formatter').setup(
     log_level = vim.log.levels.WARN,
     filetype = {
       python = {
-        require("formatter.filetypes.python").isort(),
-        require("formatter.filetypes.python").black(),
-        --function()
-        --  return {
-        --    exe = "isort",
-        --    args = {
-        --      "--quiet",
-        --      "-"
-        --    },
-        --    stdin = true
-        --  }
-        --end,
-        --function()
-        --  return {
-        --    exe = "black",
-        --    args = {
-        --      "--fast",
-        --      "-"
-        --    },
-        --    stdin = true
-        --  }
-        --end,
+        --require("formatter.filetypes.python").isort(),
+        --require("formatter.filetypes.python").black(),
+        function()
+          return {
+            exe = "isort",
+            args = {
+              "--quiet",
+              "-"
+            },
+            stdin = true
+          }
+        end,
+        function()
+          return {
+            exe = "black",
+            args = {
+              "--fast",
+              "-"
+            },
+            stdin = true
+          }
+        end,
       },
       go = {
         function()
