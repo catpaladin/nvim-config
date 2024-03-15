@@ -106,7 +106,17 @@ return packer.startup(function(use)
     },
     config   = function() require("settings.cmp") end,
   })
-  use { 'Exafunction/codeium.vim' } -- code complete AI
+  use {
+    "Exafunction/codeium.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup({
+      })
+    end
+  } -- code complete AI
 
   -- [[ Languages ]]
   use { "rafamadriz/friendly-snippets" }
@@ -124,6 +134,10 @@ return packer.startup(function(use)
             "go",
             "rust",
             "toml",
+            "yaml",
+            "json",
+            "tsx",
+            "html",
           }
         }
       end,

@@ -60,8 +60,8 @@ function M.lsp_config(client, bufnr)
   }
 
   -- fmt on write w/ lsp
-  vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
-  --vim.cmd [[autocmd BufWritePost * FormatWriteLock]]
+  --vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+  vim.cmd [[autocmd BufWritePost * FormatWrite]]
   --vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({}, 1000)]]
   --au.augroup('LspFormatOnSave', {
   --  {

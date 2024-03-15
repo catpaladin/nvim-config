@@ -1,33 +1,53 @@
+local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+local telescope = require('telescope')
+
+--vim.api.nvim_set_keymap('n', '<leader>ff',
+--  ':Telescope find_files find_command=rg,--hidden,--files theme=dropdown<CR>', {})
+
+-- keymaps
+vim.keymap.set('n', '<leader>ff',
+  function()
+    builtin.find_files({
+      no_ignore = false,
+      hidden = true
+    })
+  end)
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>gh', builtin.git_status, {})
+vim.keymap.set('n', '<leader>ch', builtin.command_history, {})
 
 -- This is your opts table
-require("telescope").setup {
+telescope.setup {
+  defaults = {
+    mappings = {
+      n = {
+        ["q"] = actions.close
+      },
+    },
+  },
   extensions = {
     ["ui-select"] = {
-      require("telescope.themes").get_dropdown {
-        -- even more opts
-      }
-
-      -- pseudo code / specification for writing custom displays, like the one
-      -- for "codeactions"
-      -- specific_opts = {
-      --   [kind] = {
-      --     make_indexed = function(items) -> indexed_items, width,
-      --     make_displayer = function(widths) -> displayer
-      --     make_display = function(displayer) -> function(e)
-      --     make_ordinal = function(e) -> string
-      --   },
-      --   -- for example to disable the custom builtin "codeactions" display
-      --      do the following
-      --   codeactions = false,
-      -- }
-    }
-  }
+      theme = "dropdown",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+      mappings = {
+        -- your custom insert mode mappings
+        ["i"] = {
+          ["<C-w>"] = function() vim.cmd('normal vbd') end,
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+          ["/"] = function()
+            vim.cmd('startinsert')
+          end
+        },
+      },
+    },
+  },
 }
 -- To get ui-select loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
-require("telescope").load_extension("ui-select")
+telescope.load_extension("ui-select")
