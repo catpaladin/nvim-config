@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 
-function configure() {
+configure() {
   rm -f $HOME/.alacritty.yml || echo "No alacritty config file found."
-  ln -s $HOME/.config/nvim/terminal-settings/alacritty.yml $HOME/.alacritty.yml && \
-    echo "Symmlink created for alacritty."
+  if [ $(uname) = 'Darwin' ]; then
+    ln -s $HOME/.config/nvim/terminal-settings/alacritty-darwin.yml $HOME/.alacritty.yml && \
+      echo "Symmlink created for alacritty."
+  else
+    ln -s $HOME/.config/nvim/terminal-settings/alacritty-linux.yml $HOME/.alacritty.yml && \
+      echo "Symmlink created for alacritty."
+  fi
 
   rm -f $HOME/.tmux.conf || echo "No tmux configuration found."
   ln -s $HOME/.config/nvim/terminal-settings/tmux.conf $HOME/.tmux.conf && \
     echo "Symmlink created for tmux."
 }
 
-function main() {
+main() {
   # check if symmlinks exist or setup symmlinks.
   ([ -L $HOME/.tmux.conf ] && [ -L $HOME/.alacritty.yml ] && echo "symmlinks exist.") || \
     (configure && echo "run configure.")
