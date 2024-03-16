@@ -10,13 +10,24 @@ local lsp_providers = {
 local lspconfig = require("lspconfig")
 require("mason").setup()
 require("mason-lspconfig").setup({
-  automatic_installation = true
+  automatic_installation = true,
+  ensure_installed = {
+    "lua_ls",
+    "pyright",
+    "gopls",
+    "terraformls",
+    "yamlls",
+    "rust_analyzer",
+    "tsserver",
+  }
 })
 
 for _, server in pairs(lsp_providers) do
   local options = require("settings.lsp." .. server).setup()
   lspconfig[server].setup(vim.tbl_deep_extend("force", options, {}))
 end
+
+lspconfig.tsserver.setup {}
 
 local util = require "formatter.util"
 require('formatter').setup(
@@ -30,6 +41,7 @@ require('formatter').setup(
             exe = "isort",
             args = {
               "--quiet",
+              "-",
             },
             stdin = true
           }
@@ -39,6 +51,7 @@ require('formatter').setup(
             exe = "black",
             args = {
               "--fast",
+              "-",
             },
             stdin = true
           }
@@ -48,6 +61,9 @@ require('formatter').setup(
         function()
           return {
             exe = "golines",
+            args = {
+              "-",
+            },
             stdin = true
           }
         end,
@@ -60,6 +76,7 @@ require('formatter').setup(
               "-rm-unused",
               "-set-alias",
               "-format",
+              "-",
             },
             stdin = true
           }
