@@ -24,7 +24,6 @@ cmp.setup({
       vim_item.menu = ({
         buffer = "[Buffer]",
         nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
         codeium = "[Codeium]",
       })[entry.source.name]
       return vim_item
@@ -63,7 +62,6 @@ cmp.setup({
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
     { name = 'buffer' },
     { name = 'codeium' },
   })

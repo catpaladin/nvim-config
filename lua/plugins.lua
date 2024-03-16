@@ -66,13 +66,6 @@ return packer.startup(function(use)
   use { 'lukas-reineke/indent-blankline.nvim' } -- show indents
   use { 'ray-x/lsp_signature.nvim' }            -- show function signature
   use { 'RRethy/vim-illuminate' }               -- highlight usage
-  use { 'leoluz/nvim-dap-go',                   -- debugger for go
-    requires = { 'mfussenegger/nvim-dap' }
-  }
-  use { "rcarriga/nvim-dap-ui",
-    requires = { "mfussenegger/nvim-dap" }
-  }                                     -- debugger ui
-  use 'theHamsta/nvim-dap-virtual-text' -- debugger text
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.5',
     requires = { { 'nvim-lua/plenary.nvim' } }
@@ -87,6 +80,13 @@ return packer.startup(function(use)
   }
   use { "mhartington/formatter.nvim" } -- for lang formatting
   use({
+    'nvimdev/lspsaga.nvim',
+    after = 'nvim-lspconfig',
+    config = function()
+      require('lspsaga').setup({})
+    end,
+  })
+  use({
     "hrsh7th/nvim-cmp",
     requires = {
       { "hrsh7th/cmp-nvim-lsp" },
@@ -97,11 +97,6 @@ return packer.startup(function(use)
       { "hrsh7th/cmp-calc",                    after = "nvim-cmp" },
       { "lukas-reineke/cmp-rg",                after = "nvim-cmp" },
       { "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" },
-      {
-        "L3MON4D3/LuaSnip",
-        config = function() require("settings.luasnip") end,
-      },
-      { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
     },
     config   = function() require("settings.cmp") end,
   })
