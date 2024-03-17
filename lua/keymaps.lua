@@ -40,15 +40,13 @@ keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 -- Close buffers
 keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 
--- Nvim-tree
-keymap("n", "<C-n>", ":NvimTreeToggle<CR>", opts)
-keymap("n", "<C-b>", ":NvimTreeRefresh<CR>", opts)
+-- Neo-tree
+keymap("n", "<C-n>", ":Neotree toggle<CR>", opts)
+keymap("n", "<C-g>", ":Neotree float git_status<CR>", opts)
 
--- Dap debugger
-keymap("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", opts)
-keymap("n", "<leader>dw", ":lua require('dapui').toggle()<CR>", opts)
-keymap("n", "<leader>dt", ":lua require('dap-go').debug_test()<CR>", opts)
-keymap("n", "<leader>dlt", ":lua require('dap-go').debug_last_test()<CR>", opts)
+-- Format
+keymap("n", "<leader>f", ":Format<CR>", opts)
+keymap("n", "<leader>fw", ":FormatWrite<CR>", opts)
 
 -- Insert --
 -- Press jk fast to enter

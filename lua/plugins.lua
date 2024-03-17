@@ -42,15 +42,16 @@ return packer.startup(function(use)
   use "akinsho/bufferline.nvim" -- add buffers
   use "moll/vim-bbye"           -- used to close buffers
   use 'rcarriga/nvim-notify'
+  use "j-hui/fidget.nvim"       -- lsp progress
   use {
-    'kyazdani42/nvim-tree.lua',
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
     requires = {
-      'kyazdani42/nvim-web-devicons', -- optional, for file icons
-    },
-    tag = 'nightly'                   -- optional, updated every week. (see issue #1193)
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+    }
   }
-
-  -- [[ Theme ]]
   use { 'DanilaMihailov/beacon.nvim' } -- cursor jump
   use {
     'nvim-lualine/lualine.nvim',       -- statusline
@@ -59,7 +60,10 @@ return packer.startup(function(use)
       opt = true,
     }
   }
+
+  -- [[ Theme ]]
   use { "folke/tokyonight.nvim" }
+  use { "navarasu/onedark.nvim" }
 
   -- [[ Dev ]]
   use { 'windwp/nvim-autopairs' }               -- close brackets, etc
@@ -77,15 +81,10 @@ return packer.startup(function(use)
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
   }
   use { "mhartington/formatter.nvim" } -- for lang formatting
-  use({
-    'nvimdev/lspsaga.nvim',
-    after = 'nvim-lspconfig',
-    config = function()
-      require('lspsaga').setup({})
-    end,
-  })
+  use { 'nvimdev/lspsaga.nvim' }
   use({
     "hrsh7th/nvim-cmp",
     requires = {
@@ -101,6 +100,10 @@ return packer.startup(function(use)
     config   = function() require("settings.cmp") end,
   })
   use {
+    "VonHeikemen/lsp-zero.nvim",
+    branch = "v2.x",
+  }
+  use {
     "Exafunction/codeium.nvim",
     requires = {
       "nvim-lua/plenary.nvim",
@@ -115,33 +118,30 @@ return packer.startup(function(use)
   -- [[ Languages ]]
   use { "rafamadriz/friendly-snippets" }
   use {
-    "danymat/neogen",
+    "nvim-treesitter/nvim-treesitter",
     config = function()
-      require('settings.neogen')
-    end,
-    requires = {
-      "nvim-treesitter/nvim-treesitter",
-      config = function()
-        require("nvim-treesitter.configs").setup {
-          ensure_installed = {
-            "go",
-            "html",
-            "javascript",
-            "json",
-            "python",
-            "rust",
-            "toml",
-            "typescript",
-            "tsx",
-          }
+      require("nvim-treesitter.configs").setup {
+        ensure_installed = {
+          "go",
+          "html",
+          "javascript",
+          "json",
+          "markdown",
+          "markdown_inline",
+          "python",
+          "rust",
+          "toml",
+          "typescript",
+          "tsx",
         }
-      end,
-    },
+      }
+    end
   }
-  use "folke/neodev.nvim"        -- lua
-  use 'crispgm/nvim-go'          -- golang
-  use 'hashivim/vim-terraform'   -- terraform
-  use 'simrat39/rust-tools.nvim' -- rust
+  use { "folke/neodev.nvim" }                  -- lua
+  use { 'crispgm/nvim-go' }                    -- golang
+  use { 'hashivim/vim-terraform' }             -- terraform
+  use { 'simrat39/rust-tools.nvim' }           -- rust
+  use { "jose-elias-alvarez/typescript.nvim" } -- typescript
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
