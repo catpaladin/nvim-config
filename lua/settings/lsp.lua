@@ -22,80 +22,61 @@ local function register_fmt_autosave(name, bufnr)
 end
 
 require("fidget").setup({})
-require("lspsaga").setup({
-  ui = { border = "rounded" },
-  symbol_in_winbar = { enable = false },
-})
 
 local function on_attach(client, bufnr)
   vim.keymap.set(
     "n",
+    "K",
+    '<cmd>lua vim.lsp.buf.hover()<CR>',
+    { buffer = bufnr, desc = "LSP hover documentation" }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>ds",
+    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',
+    { buffer = bufnr, desc = "LSP show diagnostic under cursor" }
+  )
+  vim.keymap.set(
+    "n",
     "gd",
-    "<Cmd>Lspsaga goto_definition<CR>",
+    '<cmd>lua require"telescope.builtin".lsp_definitions{}<CR>',
     { buffer = bufnr, desc = "LSP go to definition" }
   )
   vim.keymap.set(
     "n",
     "gt",
-    "<Cmd>Lspsaga peek_type_definition<CR>",
+    '<cmd>lua require"telescope.builtin".lsp_type_definitions{}<CR>',
     { buffer = bufnr, desc = "LSP go to type definition" }
   )
   vim.keymap.set(
     "n",
-    "gD",
-    "<Cmd>lua vim.lsp.buf.declaration()<CR>",
-    { buffer = bufnr, desc = "LSP go to declaration" }
+    "gi",
+    '<cmd>lua require"telescope.builtin".lsp_implementations{}<CR>',
+    { buffer = bufnr, desc = "LSP go to implementation" }
   )
   vim.keymap.set(
     "n",
-    "gi",
-    "<Cmd>lua vim.lsp.buf.implementation()<CR>",
-    { buffer = bufnr, desc = "LSP go to implementation" }
+    "gw",
+    '<cmd>lua require"telescope.builtin".lsp_document_symbols{}<CR>',
+    { buffer = bufnr, desc = "LSP document symbols" }
   )
-  vim.keymap.set("n", "gw", "<Cmd>Lspsaga lsp_finder<CR>", { buffer = bufnr, desc = "LSP document symbols" })
   vim.keymap.set(
     "n",
     "gW",
-    "<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>",
+    '<cmd>lua require"telescope.builtin".lsp_workspace_symbols{}<CR>',
     { buffer = bufnr, desc = "LSP Workspace symbols" }
   )
   vim.keymap.set(
     "n",
     "gr",
-    "<Cmd>lua vim.lsp.buf.references()<CR>",
+    '<cmd>lua require"telescope.builtin".lsp_references{}<CR>',
     { buffer = bufnr, desc = "LSP show references" }
   )
-  vim.keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>", { buffer = bufnr, desc = "LSP hover documentation" })
   vim.keymap.set(
     "n",
-    "<c-k>",
-    "<Cmd>lua vim.lsp.buf.signature_help()<CR>",
-    { buffer = bufnr, desc = "LSP signature help" }
-  )
-  vim.keymap.set(
-    "n",
-    "<leader>af",
-    "<Cmd>Lspsaga code_action<CR>",
+    "<leader>ca",
+    '<cmd>lua require"telescope.builtin".lsp_code_actions{}<CR>',
     { buffer = bufnr, desc = "LSP show code actions" }
-  )
-  vim.keymap.set("n", "<leader>rn", "<Cmd>Lspsaga rename<CR>", { buffer = bufnr, desc = "LSP rename word" })
-  vim.keymap.set(
-    "n",
-    "<leader>dn",
-    "<Cmd>Lspsaga diagnostic_jump_next<CR>",
-    { buffer = bufnr, desc = "LSP go to next diagnostic" }
-  )
-  vim.keymap.set(
-    "n",
-    "<leader>dp",
-    "<Cmd>Lspsaga diagnostic_jump_prev<CR>",
-    { buffer = bufnr, desc = "LSP go to previous diagnostic" }
-  )
-  vim.keymap.set(
-    "n",
-    "<leader>ds",
-    "<Cmd>Lspsaga show_line_diagnostics<CR>",
-    { buffer = bufnr, desc = "LSP show diagnostic under cursor" }
   )
 
   -- Register formatting and autoformatting
@@ -103,6 +84,8 @@ local function on_attach(client, bufnr)
   local supported_clients = {
     gopls = true,
     pylsp = true,
+    terraformls = true,
+    tsserver = true,
   }
 
   if supported_clients[client.name] then
@@ -182,7 +165,7 @@ lspconfig.gopls.setup({
 
 lspconfig.pylsp.setup({
   on_attach = on_attach,
-  single_file_support = false,
+  single_file_support = true,
   settings = {
     pylsp = {
       plugins = {

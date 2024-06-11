@@ -84,7 +84,6 @@ return packer.startup(function(use)
     "WhoIsSethDaniel/mason-tool-installer.nvim",
   }
   use { "mhartington/formatter.nvim" } -- for lang formatting
-  use { 'nvimdev/lspsaga.nvim' }
   use({
     "hrsh7th/nvim-cmp",
     requires = {
@@ -116,7 +115,6 @@ return packer.startup(function(use)
   } -- code complete AI
 
   -- [[ Languages ]]
-  use { "rafamadriz/friendly-snippets" }
   use {
     "nvim-treesitter/nvim-treesitter",
     config = function()
