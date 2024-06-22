@@ -22,6 +22,10 @@ local function register_fmt_autosave(name, bufnr)
 end
 
 require("fidget").setup({})
+require("lspsaga").setup({
+  ui = { border = "rounded" },
+  symbol_in_winbar = { enable = false },
+})
 
 local function on_attach(client, bufnr)
   vim.keymap.set(
@@ -33,7 +37,7 @@ local function on_attach(client, bufnr)
   vim.keymap.set(
     "n",
     "<leader>ds",
-    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',
+    "<Cmd>Lspsaga show_line_diagnostics<CR>",
     { buffer = bufnr, desc = "LSP show diagnostic under cursor" }
   )
   vim.keymap.set(
