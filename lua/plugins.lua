@@ -75,6 +75,12 @@ return packer.startup(function(use)
     requires = { { 'nvim-lua/plenary.nvim' } }
   }                                                 -- fuzzy find
   use { 'nvim-telescope/telescope-ui-select.nvim' } -- telescope ui
+  use {
+    'esensar/nvim-dev-container',
+    requires = {
+      'nvim-treesitter/nvim-treesitter',
+    }
+  } -- dev container
 
   -- [[ LSP ]]
   use {
