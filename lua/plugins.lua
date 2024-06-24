@@ -122,7 +122,7 @@ return packer.startup(function(use)
   } -- code complete AI
 
   -- [[ Languages ]]
-  use { "rafamadriz/friendly-snippets" }
+use { "rafamadriz/friendly-snippets" }
   use {
     "nvim-treesitter/nvim-treesitter",
     config = function()

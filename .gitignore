@@ -1,3 +1,4 @@
 plugin/*
 *.backup
 *.luarc.json
+tmp
