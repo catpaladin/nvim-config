@@ -27,7 +27,7 @@ return {
           "saadparwaiz1/cmp_luasnip",
         },
       },
-      { "j-hui/fidget.nvim" },
+      { "j-hui/fidget.nvim" },            -- lsp progress
       { "nvimdev/lspsaga.nvim" },
       { "mhartington/formatter.nvim" },
 
@@ -52,6 +52,7 @@ return {
           }
         end
       },
+      -- code complete AI
       {
         "Exafunction/codeium.nvim",
         dependencies = {
@@ -62,7 +63,7 @@ return {
           require("codeium").setup({
           })
         end
-      }, -- code complete AI
+      },
 
       -- Language Specific
       { "folke/neodev.nvim" },                  -- lua

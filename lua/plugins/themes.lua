@@ -52,8 +52,9 @@ return {
   },
 	{ "EdenEast/nightfox.nvim" },
 	{ "catppuccin/nvim", name = "catppuccin" },
+  -- status line
   {
-    'nvim-lualine/lualine.nvim',       -- statusline
+    'nvim-lualine/lualine.nvim',
     requires = {
       'kyazdani42/nvim-web-devicons',
       opt = true,

@@ -28,6 +28,13 @@ return {
       require("nvim_comment").setup({ create_mappings = false })
     end
   },
+  -- Git
+  {
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	},
   -- Preview markdown live in web browser
   {
     "iamcco/markdown-preview.nvim",
@@ -117,5 +124,5 @@ return {
         },
       }
     end,
-  }
+  },
 }
