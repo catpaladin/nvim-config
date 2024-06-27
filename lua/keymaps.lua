@@ -38,7 +38,7 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
-keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
+keymap("n", "<S-q>", ":bd<CR>", opts)
 
 -- Neo-tree
 keymap("n", "<C-n>", ":Neotree toggle<CR>", opts)
@@ -51,6 +51,12 @@ keymap("n", "<leader>fw", ":FormatWrite<CR>", opts)
 -- Insert --
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
+--
+-- markdown preview
+vim.keymap.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>")
+
+-- nvim-comment
+vim.keymap.set({"n", "v"}, "//", ":CommentToggle<cr>")
 
 -- Visual --
 -- Stay in indent mode
