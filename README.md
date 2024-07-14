@@ -14,7 +14,7 @@ Setup in the config directory ($HOME/.config/nvim)
 
 ## Setup Go tools
 ```bash
-./scripts/install_go_deps.sh
+./scripts/install_dependencies.sh
 ```
 
 ## Setup Python dependencies
