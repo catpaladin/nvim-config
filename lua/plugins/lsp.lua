@@ -27,9 +27,9 @@ return {
           "saadparwaiz1/cmp_luasnip",
         },
       },
-      { "j-hui/fidget.nvim" },            -- lsp progress
-      { "nvimdev/lspsaga.nvim" },
-      { "mhartington/formatter.nvim" },
+      { "j-hui/fidget.nvim" },      -- lsp progress
+      { "nvimdev/lspsaga.nvim" },   -- lsp support
+      { 'stevearc/conform.nvim' },  -- format/linter on write
 
       -- Dev Dependencies 
       {
@@ -146,30 +146,6 @@ return {
       })
 
       -- LSP configs
-
-      -- Setup functions and options to be used further down
-      local format_group = vim.api.nvim_create_augroup("LspFormatGroup", {})
-      local format_opts = { async = false, timeout_ms = 2500 }
-
-      local function register_fmt_keymap(name, bufnr)
-        local fmt_keymap = "<leader>f"
-        vim.keymap.set("n", fmt_keymap, function()
-          vim.lsp.buf.format(vim.tbl_extend("force", format_opts, { name = name, bufnr = bufnr }))
-        end, { desc = "Format current buffer [LSP]", buffer = bufnr })
-      end
-
-      local function register_fmt_autosave(name, bufnr)
-        vim.api.nvim_clear_autocmds({ group = format_group, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          group = format_group,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format(vim.tbl_extend("force", format_opts, { name = name, bufnr = bufnr }))
-          end,
-          desc = "Format on save [LSP]",
-        })
-      end
-
       require("fidget").setup({})
       require("lspsaga").setup({
         ui = { border = "rounded" },
@@ -231,20 +207,6 @@ return {
           '<cmd>lua require"telescope.builtin".lsp_code_actions{}<CR>',
           { buffer = bufnr, desc = "LSP show code actions" }
         )
-
-        -- Register formatting and autoformatting
-        -- based on lsp server
-        local supported_clients = {
-          gopls = true,
-          pylsp = true,
-          terraformls = true,
-          tsserver = true,
-        }
-
-        if supported_clients[client.name] then
-          register_fmt_keymap(client.name, bufnr)
-          register_fmt_autosave(client.name, bufnr)
-        end
       end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -290,9 +252,6 @@ return {
       })
 
       local lspconfig = require("lspconfig")
-      local util = require("lspconfig/util")
-      local path = util.path
-
       lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 
       lspconfig.gopls.setup({
@@ -352,62 +311,36 @@ return {
       })
 
       -- Linter/Formatter
-      local formatters = require("formatter")
-      formatters.setup({
-        logging = true,
-        log_level = vim.log.levels.WARN,
-        filetype = {
-          python = {
-            function()
-              return {
-                exe = "isort",
-                args = {
-                  "--quiet",
-                  "-",
-                },
-                stdin = true
-              }
-            end,
-            function()
-              return {
-                exe = "black",
-                args = {
-                  "--fast",
-                  "-",
-                },
-                stdin = true
-              }
-            end,
-          },
-          go = {
-            function()
-              return {
-                exe = "golines",
-                args = {
-                  "-",
-                },
-                stdin = true
-              }
-            end,
-            function()
-              return {
-                exe = "goimports-reviser",
-                args = {
-                  "-imports-order",
-                  "std,general,company,project,blanked,dotted",
-                  "-rm-unused",
-                  "-set-alias",
-                  "-format",
-                  "-",
-                },
-                stdin = true
-              }
-            end,
-          },
-          ["*"] = {
-            require("formatter.filetypes.any").remove_trailing_whitespace
-          }
-        }
+      local cf = require("conform")
+      cf.setup({
+        formatters_by_ft = {
+          lua = { "stylua" },
+          go = function(bufnr)
+            if cf.get_formatter_info("goimports-reviser", bufnr).available then
+              return { "goimports-reviser", "gofumt" }
+            else
+              return { "goimports", "gofmt" }
+            end
+          end,
+          python = function(bufnr)
+            if cf.get_formatter_info("ruff_format", bufnr).available then
+              return { "ruff_format" }
+            else
+              return { "isort", "black" }
+            end
+          end,
+          -- Use a sub-list to run only the first available formatter
+          javascript = { { "prettierd", "prettier" } },
+          -- Use the "*" filetype to run formatters on all filetypes.
+          ["*"] = { "codespell" },
+          -- Use the "_" filetype to run formatters on filetypes that don't
+          -- have other formatters configured.
+          ["_"] = { "trim_whitespace" },
+        },
+        format_on_save = {
+          lsp_format = "fallback",
+          timeout_ms = 500,
+        },
       })
     end
   }
