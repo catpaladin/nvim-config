@@ -13,6 +13,7 @@ go install github.com/go-delve/delve/cmd/dlv@v1.21.0
 go install github.com/spf13/cobra-cli@latest
 go install github.com/a-h/templ/cmd/templ@latest
 go install github.com/air-verse/air@latest
+go install github.com/swaggo/swag/cmd/swag@latest
 
 # Install python tools (requires rust cargo path)
 curl -LsSf https://astral.sh/uv/install.sh | sh
