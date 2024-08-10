@@ -39,6 +39,7 @@ local options = {
 }
 
 vim.opt.shortmess:append("c")
+vim.opt.diffopt:append("vertical")
 
 for k, v in pairs(options) do
 	vim.opt[k] = v
