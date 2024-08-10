@@ -1,23 +1,3 @@
-# dotfile setup
+# neovim config
 
-Setup in the config directory ($HOME/.config/nvim)
-
-## Setup Fonts
-```bash
-./scripts/install_font.sh
-```
-
-## Setup Tmux & Alacritty
-```bash
-./scripts/install.sh
-```
-
-## Setup Go tools
-```bash
-./scripts/install_dependencies.sh
-```
-
-## Setup Python dependencies
-```bash
-pip install -r requirements.txt
-```
+Developer settings for my development and DevOps tasks. Maybe it will work for you.
