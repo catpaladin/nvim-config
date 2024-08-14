@@ -355,9 +355,10 @@ return {
 						end
 					end,
 					-- Use a sub-list to run only the first available formatter
-					javascript = { { "prettierd", "prettier" } },
+					-- javascript = { { "prettierd", "prettier" } },
+					javascript = { "prettier" },
 					-- Use the "*" filetype to run formatters on all filetypes.
-					["*"] = { "codespell" },
+					-- ["*"] = { "codespell" },
 					-- Use the "_" filetype to run formatters on filetypes that don't
 					-- have other formatters configured.
 					["_"] = { "trim_whitespace" },
