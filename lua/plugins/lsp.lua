@@ -367,6 +367,11 @@ return {
 					timeout_ms = 500,
 				},
 			})
+			cf.formatters.stylua = {
+				inherit = false,
+				command = "stylua",
+				args = { "--indent-type", "Spaces", "--indent-width", "2" },
+			}
 		end,
 	},
 }
