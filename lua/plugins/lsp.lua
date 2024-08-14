@@ -342,7 +342,7 @@ return {
 					lua = { "stylua" },
 					go = function(bufnr)
 						if cf.get_formatter_info("goimports-reviser", bufnr).available then
-							return { "goimports-reviser", "gofumt" }
+							return { "goimports-reviser", { "gofumt", "gofmt" } }
 						else
 							return { "goimports", "gofmt" }
 						end
@@ -371,7 +371,7 @@ return {
 			cf.formatters.stylua = {
 				inherit = false,
 				command = "stylua",
-				args = { "--indent-type", "Spaces", "--indent-width", "2" },
+				args = { "--indent-type", "Spaces", "--indent-width", "2", "-" },
 			}
 		end,
 	},
