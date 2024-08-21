@@ -51,12 +51,16 @@ keymap("n", "<leader>fw", ":FormatWrite<CR>", opts)
 -- Insert --
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
---
+
 -- markdown preview
-vim.keymap.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>")
+keymap("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", opts)
 
 -- nvim-comment
-vim.keymap.set({"n", "v"}, "//", ":CommentToggle<cr>")
+keymap("n", "//", ":CommentToggle<cr>", opts)
+keymap("v", "//", ":CommentToggle<cr>", opts)
+
+-- pretty screenshots
+keymap("v", "<leader>cn", ":CarbonNow<CR>", opts)
 
 -- Visual --
 -- Stay in indent mode
