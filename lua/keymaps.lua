@@ -59,9 +59,6 @@ keymap("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", opts)
 keymap("n", "//", ":CommentToggle<cr>", opts)
 keymap("v", "//", ":CommentToggle<cr>", opts)
 
--- pretty screenshots
-keymap("v", "<leader>cn", ":CarbonNow<CR>", opts)
-
 -- Visual --
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)

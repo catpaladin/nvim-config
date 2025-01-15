@@ -52,18 +52,6 @@ return {
           })
         end,
       },
-      -- code complete AI
-      {
-        "Exafunction/codeium.nvim",
-        dependencies = {
-          "nvim-lua/plenary.nvim",
-          "hrsh7th/nvim-cmp",
-        },
-        config = function()
-          require("codeium").setup({})
-        end,
-      },
-
       -- Language Specific
       { "folke/neodev.nvim" }, -- lua
       {
@@ -77,9 +65,7 @@ return {
         ft = { "go", "gomod" },
         build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
       },
-      { "hashivim/vim-terraform" }, -- terraform
       { "simrat39/rust-tools.nvim" }, -- rust
-      { "jose-elias-alvarez/typescript.nvim" }, -- typescript
     },
     config = function()
       -- cmp configs
@@ -329,10 +315,6 @@ return {
       })
 
       require("rust-tools").setup()
-
-      require("typescript").setup({
-        server = { on_attach = on_attach },
-      })
 
       -- Linter/Formatter
       local cf = require("conform")
