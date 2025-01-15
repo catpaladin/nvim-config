@@ -2,42 +2,55 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = "Telescope",
     keys = {
-      { "<Leader>p", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<Leader>fs", "<Cmd>Telescope live_grep<CR>", desc = "Grep inside files" },
-      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search in vim :help" },
-      { "<Leader>fb", "<Cmd>Telescope buffers<CR>", desc = "List and search buffers" },
-      { "<Leader>fq", "<Cmd>Telescope quickfix<CR>", desc = "List and search quickfix" },
+      -- Basic file and text search
+      { "<leader>p", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+      { "<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Search in files" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
+      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Search help" },
+      -- Search word under cursor
       {
-        "<Leader>fd",
-        '<Cmd>lua require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })<CR>',
-        desc = "Find files in config path",
+        "<leader>fw",
+        function()
+          require("telescope.builtin").grep_string({ search = vim.fn.expand("<cword>") })
+        end,
+        desc = "Search current word",
       },
+      -- Search in neovim config
       {
-        "<Leader>fw",
-        '<Cmd>lua require("telescope.builtin").grep_string({ search = vim.fn.expand("<cword>") })<CR>',
-        desc = "Grep word under cursor",
+        "<leader>fd",
+        function()
+          require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+        end,
+        desc = "Search in config",
       },
     },
-    config = function()
-      local telescope = require("telescope")
-      local themes = require("telescope.themes")
-      local previewers = require("telescope.previewers")
-
-      local theme_defaults = themes.get_dropdown({
-        win_blend = 10,
-        results_height = 0.25,
-        width = 0.65,
-        shorten_path = true,
-      })
-
-      telescope.setup({
-        defaults = vim.tbl_extend("error", theme_defaults, {
-          file_previewer = previewers.vim_buffer_cat.new,
-          grep_previewer = previewers.vim_buffer_vimgrep.new,
-          qflist_previewer = previewers.vim_buffer_qflist.new,
-        }),
-      })
-    end,
+    opts = {
+      defaults = {
+        path_display = { "truncate" },
+        layout_config = {
+          width = 0.75,
+          height = 0.75,
+          prompt_position = "top",
+        },
+        file_ignore_patterns = {
+          "node_modules/",
+          ".git/",
+        },
+        mappings = {
+          i = {
+            ["<esc>"] = "close",
+            ["<C-j>"] = "move_selection_next",
+            ["<C-k>"] = "move_selection_previous",
+          },
+        },
+      },
+      pickers = {
+        find_files = {
+          hidden = true,
+        },
+      },
+    },
   },
 }

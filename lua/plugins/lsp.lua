@@ -1,39 +1,51 @@
 return {
-  -- LSP zero
   {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x",
     lazy = true,
     config = false,
   },
-
-  -- LSP
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" }, -- Load only when buffer is opened
     dependencies = {
-      -- Core Dependencies
-      { "williamboman/mason.nvim" },
+      -- Core Dependencies (lazy-loaded)
+      {
+        "williamboman/mason.nvim",
+        cmd = "Mason",
+        build = ":MasonUpdate",
+      },
       { "williamboman/mason-lspconfig.nvim" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
       {
         "hrsh7th/nvim-cmp",
+        event = "InsertEnter", -- Load completion only in insert mode
         dependencies = {
-          "roobert/tailwindcss-colorizer-cmp.nvim",
-          "hrsh7th/cmp-nvim-lsp",
-          "hrsh7th/cmp-path",
-          "hrsh7th/cmp-buffer",
-          "onsails/lspkind-nvim",
-          "L3MON4D3/LuaSnip",
-          "saadparwaiz1/cmp_luasnip",
+          { "roobert/tailwindcss-colorizer-cmp.nvim", lazy = true },
+          { "hrsh7th/cmp-nvim-lsp", lazy = true },
+          { "hrsh7th/cmp-path", lazy = true },
+          { "hrsh7th/cmp-buffer", lazy = true },
+          { "onsails/lspkind-nvim", lazy = true },
+          { "L3MON4D3/LuaSnip", lazy = true },
+          { "saadparwaiz1/cmp_luasnip", lazy = true },
         },
       },
-      { "j-hui/fidget.nvim" }, -- lsp progress
-      { "nvimdev/lspsaga.nvim" }, -- lsp support
-      { "stevearc/conform.nvim" }, -- format/linter on write
-
-      -- Dev Dependencies
+      {
+        "j-hui/fidget.nvim",
+        event = "LspAttach",
+      },
+      {
+        "nvimdev/lspsaga.nvim",
+        event = "LspAttach",
+      },
+      {
+        "stevearc/conform.nvim",
+        event = { "BufWritePre" },
+      },
       {
         "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        event = { "BufReadPost", "BufNewFile" },
         config = function()
           require("nvim-treesitter.configs").setup({
             ensure_installed = {
@@ -48,38 +60,60 @@ return {
               "toml",
               "typescript",
               "tsx",
+              "lua",
             },
+            sync_install = false,
+            auto_install = true,
+            highlight = { enable = true },
           })
         end,
       },
-      -- Language Specific
-      { "folke/neodev.nvim" }, -- lua
+      -- Language Specific (lazy-loaded by filetype)
       {
-        "ray-x/go.nvim", -- Go
+        "folke/neodev.nvim",
+        ft = "lua",
+      },
+      {
+        "ray-x/go.nvim",
+        ft = { "go", "gomod" },
         dependencies = {
           "ray-x/guihua.lua",
-          "neovim/nvim-lspconfig",
-          "nvim-treesitter/nvim-treesitter",
         },
-        event = { "CmdlineEnter" },
-        ft = { "go", "gomod" },
-        build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+        build = ':lua require("go.install").update_all_sync()',
+        config = true,
       },
-      { "simrat39/rust-tools.nvim" }, -- rust
+      {
+        "simrat39/rust-tools.nvim",
+        ft = "rust",
+      },
     },
     config = function()
-      -- cmp configs
-      -- Override autocompletion in this section
-      -- for nvim-cmp
+      -- Load utility functions
+      local util = {}
+
+      function util.path_exists(path)
+        local file = io.open(path, "r")
+        if file then
+          file:close()
+          return true
+        end
+        return false
+      end
+
+      function util.get_python_path()
+        local venv_path = vim.fn.getcwd() .. "/.venv/bin/python"
+        return util.path_exists(venv_path) and venv_path or nil
+      end
+
+      -- Setup nvim-cmp
+      local cmp = require("cmp")
       local has_words_before = function()
-        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+        if vim.bo.buftype == "prompt" then
           return false
         end
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
       end
-      -- And you can configure cmp even more, if you want to.
-      local cmp = require("cmp")
 
       cmp.setup({
         window = {
@@ -101,121 +135,28 @@ return {
           { name = "buffer" },
           { name = "codeium" },
         }),
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-          ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-          ["<C-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-          ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-          ["<C-e>"] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-          }),
-          ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-          ["<Tab>"] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              fallback()
-            end
-          end),
-          ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              fallback()
-            end
-          end),
-        }),
+        mapping = require("config.keymaps").get_cmp_mappings(cmp, has_words_before),
       })
 
-      -- LSP configs
-      require("fidget").setup({})
-      require("lspsaga").setup({
-        ui = { border = "rounded" },
-        symbol_in_winbar = { enable = false },
-      })
-
-      local function on_attach(client, bufnr)
-        vim.keymap.set(
-          "n",
-          "K",
-          "<cmd>lua vim.lsp.buf.hover()<CR>",
-          { buffer = bufnr, desc = "LSP hover documentation" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>ds",
-          "<Cmd>Lspsaga show_line_diagnostics<CR>",
-          { buffer = bufnr, desc = "LSP show diagnostic under cursor" }
-        )
-        vim.keymap.set(
-          "n",
-          "gd",
-          '<cmd>lua require"telescope.builtin".lsp_definitions{}<CR>',
-          { buffer = bufnr, desc = "LSP go to definition" }
-        )
-        vim.keymap.set(
-          "n",
-          "gt",
-          '<cmd>lua require"telescope.builtin".lsp_type_definitions{}<CR>',
-          { buffer = bufnr, desc = "LSP go to type definition" }
-        )
-        vim.keymap.set(
-          "n",
-          "gi",
-          '<cmd>lua require"telescope.builtin".lsp_implementations{}<CR>',
-          { buffer = bufnr, desc = "LSP go to implementation" }
-        )
-        vim.keymap.set(
-          "n",
-          "gw",
-          '<cmd>lua require"telescope.builtin".lsp_document_symbols{}<CR>',
-          { buffer = bufnr, desc = "LSP document symbols" }
-        )
-        vim.keymap.set(
-          "n",
-          "gW",
-          '<cmd>lua require"telescope.builtin".lsp_workspace_symbols{}<CR>',
-          { buffer = bufnr, desc = "LSP Workspace symbols" }
-        )
-        vim.keymap.set(
-          "n",
-          "gr",
-          '<cmd>lua require"telescope.builtin".lsp_references{}<CR>',
-          { buffer = bufnr, desc = "LSP show references" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>ca",
-          '<cmd>lua require"telescope.builtin".lsp_code_actions{}<CR>',
-          { buffer = bufnr, desc = "LSP show code actions" }
-        )
-      end
-
+      -- LSP Setup
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
-      capabilities.textDocument.completion.completionItem.preselectSupport = true
-      capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-      capabilities.textDocument.completion.completionItem.resolveSupport = {
-        properties = {
-          "documentation",
-          "detail",
-          "additionalTextEdits",
+      capabilities.textDocument.completion.completionItem = {
+        snippetSupport = true,
+        preselectSupport = true,
+        insertReplaceSupport = true,
+        resolveSupport = {
+          properties = { "documentation", "detail", "additionalTextEdits" },
         },
       }
 
-      vim.diagnostic.config({
-        virtual_text = {
-          severity = { vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN },
-        },
-      })
+      -- Configure LSP servers
+      local lspconfig = require("lspconfig")
+      local lsp = require("lsp-zero").preset("recommended")
 
+      -- Set up Mason
       local tools = {
         "lua_ls",
         "pyright",
-        "tsserver",
         "gopls",
         "black",
         "stylua",
@@ -228,132 +169,110 @@ return {
 
       require("mason-tool-installer").setup({ ensure_installed = tools })
       require("mason").setup()
-      local lsp = require("lsp-zero").preset("recommended")
-      lsp.on_attach(on_attach)
+
+      -- Common LSP configurations
+      lsp.on_attach(function(client, bufnr)
+        require("config.keymaps").setup_lsp_keymaps(bufnr)
+      end)
+
       lsp.set_server_config({
         on_init = function(client)
           client.server_capabilities.semanticTokensProvider = nil
         end,
       })
 
-      local lspconfig = require("lspconfig")
-      lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
-
-      lspconfig.gopls.setup({
-        on_attach = on_attach,
-        flags = { debounce_text_changes = 150 },
-        settings = {
-          gopls = {
-            analyses = {
-              unusedparams = true,
-              unusedvariable = true,
-            },
-            usePlaceholders = true,
-            completeUnimported = true,
-          },
-        },
-      })
-
-      local function path_exists(path)
-        local file = io.open(path, "r")
-        if file then
-          file:close()
-          return true
-        else
-          return false
-        end
-      end
-
-      local function get_python_path()
-        local default_venv_path
-        _, default_venv_path = pcall(function()
-          return table.concat({ vim.fn.getcwd(), ".venv", "bin", "python" }, "/")
-        end)
-
-        if path_exists(default_venv_path) then
-          return default_venv_path
-        else
-          return nil
-        end
-      end
-      lspconfig.pyright.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        before_init = function(_, config)
-          -- Change this path to default path for poetry
-          --default_venv_path = path.join(vim.env.HOME, "virtualenvs", "nvim-venv", "bin", "python")
-          local python_path = get_python_path()
-          if python_path ~= nil then
-            config.settings.python.pythonPath = python_path
-          end
-        end,
-      })
-
-      lspconfig.yamlls.setup({
-        on_attach = on_attach,
-        settings = {
-          yaml = {
-            validate = false,
-            format = {
-              enable = false,
+      -- Server-specific configurations
+      local servers = {
+        lua_ls = lsp.nvim_lua_ls(),
+        gopls = {
+          flags = { debounce_text_changes = 150 },
+          settings = {
+            gopls = {
+              usePlaceholders = true,
+              completeUnimported = true,
             },
           },
         },
-      })
+        pyright = {
+          capabilities = capabilities,
+          before_init = function(_, config)
+            local python_path = util.get_python_path()
+            if python_path then
+              config.settings.python.pythonPath = python_path
+            end
+          end,
+        },
+        yamlls = {
+          settings = {
+            yaml = {
+              validate = false,
+              format = { enable = false },
+            },
+          },
+        },
+      }
+
+      -- Set up each LSP server
+      for server, config in pairs(servers) do
+        lspconfig[server].setup(config)
+      end
 
       lsp.setup()
 
-      require("neodev").setup({
-        -- add any options here, or leave empty to use the default settings
-      })
-
+      -- Additional tool configurations
+      require("neodev").setup({})
       require("go").setup({
         lsp_cfg = {
-          on_attach = on_attach,
           capabilities = capabilities,
         },
       })
-
       require("rust-tools").setup()
+      require("fidget").setup({})
+      require("lspsaga").setup({
+        ui = { border = "rounded" },
+        symbol_in_winbar = { enable = false },
+      })
 
-      -- Linter/Formatter
-      local cf = require("conform")
-      cf.setup({
+      -- Configure formatter
+      require("conform").setup({
         formatters_by_ft = {
           lua = { "stylua" },
           go = function(bufnr)
-            if cf.get_formatter_info("goimports-reviser", bufnr).available then
+            local conform = require("conform")
+            if conform.get_formatter_info("goimports-reviser", bufnr).available then
               return { "goimports-reviser", { "gofumt", "gofmt" } }
-            else
-              return { "goimports", "gofmt" }
             end
+            return { "goimports", "gofmt" }
           end,
           python = function(bufnr)
-            if cf.get_formatter_info("ruff_format", bufnr).available then
+            local conform = require("conform")
+            if conform.get_formatter_info("ruff_format", bufnr).available then
               return { "ruff_format" }
-            else
-              return { "isort", "black" }
             end
+            return { "isort", "black" }
           end,
-          -- Use a sub-list to run only the first available formatter
-          -- javascript = { { "prettierd", "prettier" } },
           javascript = { "prettier" },
-          -- Use the "*" filetype to run formatters on all filetypes.
-          -- ["*"] = { "codespell" },
-          -- Use the "_" filetype to run formatters on filetypes that don't
-          -- have other formatters configured.
           ["_"] = { "trim_whitespace" },
         },
         format_on_save = {
           lsp_format = "fallback",
           timeout_ms = 500,
         },
+        formatters = {
+          stylua = {
+            inherit = false,
+            command = "stylua",
+            args = { "--indent-type", "Spaces", "--indent-width", "2", "-" },
+          },
+        },
       })
-      cf.formatters.stylua = {
-        inherit = false,
-        command = "stylua",
-        args = { "--indent-type", "Spaces", "--indent-width", "2", "-" },
-      }
+
+      -- Set up diagnostics
+      vim.diagnostic.config({
+        virtual_text = {
+          severity = { vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN },
+        },
+      })
     end,
   },
 }

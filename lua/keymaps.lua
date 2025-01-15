@@ -44,6 +44,9 @@ keymap("n", "<S-q>", ":bd<CR>", opts)
 keymap("n", "<C-n>", ":Neotree toggle<CR>", opts)
 keymap("n", "<C-g>", ":Neotree float git_status<CR>", opts)
 
+-- Toggleterm
+keymap("n", "<C-\\>", ":ToggleTerm<CR>", opts)
+
 -- Format
 keymap("n", "<leader>f", ":Format<CR>", opts)
 keymap("n", "<leader>fw", ":FormatWrite<CR>", opts)

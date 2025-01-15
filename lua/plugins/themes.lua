@@ -27,7 +27,6 @@ return {
       })
     end,
   },
-  { "catppuccin/nvim", name = "catppuccin" },
   -- status line
   {
     "nvim-lualine/lualine.nvim",
