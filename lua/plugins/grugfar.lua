@@ -31,6 +31,7 @@ return {
     -- Optional: add highlights for better visibility
     config = function(_, opts)
       require("grug-far").setup(opts)
+      vim.g.maplocalleader = ","
 
       -- Set highlighting for matches
       vim.api.nvim_set_hl(0, "GrugFarMatch", { fg = "yellow", bold = true })
