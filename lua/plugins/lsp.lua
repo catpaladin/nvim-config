@@ -86,6 +86,25 @@ return {
         "simrat39/rust-tools.nvim",
         ft = "rust",
       },
+      {
+        "pmizio/typescript-tools.nvim",
+        ft = { "typescript", "typescriptreact" },
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+          settings = {
+            -- Specify TSServer settings here
+            tsserver_file_preferences = {
+              includeInlayParameterNameHints = "all",
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
+            },
+          },
+        },
+      },
     },
     config = function()
       -- Load utility functions
@@ -165,6 +184,7 @@ return {
         "terraformls",
         "yamlls",
         "rust_analyzer",
+        "typescript-language-server",
       }
 
       require("mason-tool-installer").setup({ ensure_installed = tools })
@@ -210,6 +230,33 @@ return {
             },
           },
         },
+        tsserver = {
+          capabilities = capabilities,
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+          },
+        },
       }
 
       -- Set up each LSP server
@@ -252,6 +299,8 @@ return {
             return { "isort", "black" }
           end,
           javascript = { "prettier" },
+          typescript = { "prettier" },
+          typescriptreact = { "prettier" },
           ["_"] = { "trim_whitespace" },
         },
         format_on_save = {
