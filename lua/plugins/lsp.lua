@@ -74,36 +74,8 @@ return {
         ft = "lua",
       },
       {
-        "ray-x/go.nvim",
-        ft = { "go", "gomod" },
-        dependencies = {
-          "ray-x/guihua.lua",
-        },
-        build = ':lua require("go.install").update_all_sync()',
-        config = true,
-      },
-      {
         "simrat39/rust-tools.nvim",
         ft = "rust",
-      },
-      {
-        "pmizio/typescript-tools.nvim",
-        ft = { "typescript", "typescriptreact" },
-        dependencies = { "nvim-lua/plenary.nvim" },
-        opts = {
-          settings = {
-            -- Specify TSServer settings here
-            tsserver_file_preferences = {
-              includeInlayParameterNameHints = "all",
-              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-              includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHints = true,
-              includeInlayPropertyDeclarationTypeHints = true,
-              includeInlayFunctionLikeReturnTypeHints = true,
-              includeInlayEnumMemberValueHints = true,
-            },
-          },
-        },
       },
     },
     config = function()
@@ -194,7 +166,6 @@ return {
       lsp.on_attach(function(client, bufnr)
         require("config.keymaps").setup_lsp_keymaps(bufnr)
       end)
-
       lsp.set_server_config({
         on_init = function(client)
           client.server_capabilities.semanticTokensProvider = nil
@@ -204,15 +175,6 @@ return {
       -- Server-specific configurations
       local servers = {
         lua_ls = lsp.nvim_lua_ls(),
-        gopls = {
-          flags = { debounce_text_changes = 150 },
-          settings = {
-            gopls = {
-              usePlaceholders = true,
-              completeUnimported = true,
-            },
-          },
-        },
         pyright = {
           capabilities = capabilities,
           before_init = function(_, config)
@@ -268,52 +230,11 @@ return {
 
       -- Additional tool configurations
       require("neodev").setup({})
-      require("go").setup({
-        lsp_cfg = {
-          capabilities = capabilities,
-        },
-      })
       require("rust-tools").setup()
       require("fidget").setup({})
       require("lspsaga").setup({
         ui = { border = "rounded" },
         symbol_in_winbar = { enable = false },
-      })
-
-      -- Configure formatter
-      require("conform").setup({
-        formatters_by_ft = {
-          lua = { "stylua" },
-          go = function(bufnr)
-            local conform = require("conform")
-            if conform.get_formatter_info("goimports-reviser", bufnr).available then
-              return { "goimports-reviser", { "gofumt", "gofmt" } }
-            end
-            return { "goimports", "gofmt" }
-          end,
-          python = function(bufnr)
-            local conform = require("conform")
-            if conform.get_formatter_info("ruff_format", bufnr).available then
-              return { "ruff_format" }
-            end
-            return { "isort", "black" }
-          end,
-          javascript = { "prettier" },
-          typescript = { "prettier" },
-          typescriptreact = { "prettier" },
-          ["_"] = { "trim_whitespace" },
-        },
-        format_on_save = {
-          lsp_format = "fallback",
-          timeout_ms = 500,
-        },
-        formatters = {
-          stylua = {
-            inherit = false,
-            command = "stylua",
-            args = { "--indent-type", "Spaces", "--indent-width", "2", "-" },
-          },
-        },
       })
 
       -- Set up diagnostics
