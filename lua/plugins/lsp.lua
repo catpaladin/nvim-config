@@ -61,6 +61,8 @@ return {
               "typescript",
               "tsx",
               "lua",
+              "astro",
+              "svelte",
             },
             sync_install = false,
             auto_install = true,
@@ -157,13 +159,15 @@ return {
         "yamlls",
         "rust_analyzer",
         "typescript-language-server",
+        "astro-language-server",
+        "svelte-language-server",
       }
 
       require("mason-tool-installer").setup({ ensure_installed = tools })
       require("mason").setup()
 
       -- Common LSP configurations
-      lsp.on_attach(function(client, bufnr)
+      lsp.on_attach(function(_, bufnr)
         require("config.keymaps").setup_lsp_keymaps(bufnr)
       end)
       lsp.set_server_config({
@@ -172,7 +176,6 @@ return {
         end,
       })
 
-      -- Server-specific configurations
       local servers = {
         lua_ls = lsp.nvim_lua_ls(),
         pyright = {
@@ -219,8 +222,22 @@ return {
             },
           },
         },
+        astro = {
+          capabilities = capabilities,
+          init_options = {
+            configuration = {
+              typescript = {
+                tsdk = vim.fn.expand("$HOME/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib"),
+              },
+            },
+          },
+        },
+        svelte = {
+          capabilities = capabilities,
+        },
       }
 
+      -- Server-specific configurations
       -- Set up each LSP server
       for server, config in pairs(servers) do
         lspconfig[server].setup(config)
