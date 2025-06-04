@@ -90,7 +90,7 @@ return {
       options = {
         mode = "buffers",
         separator_style = "slant",
-        always_show_bufferline = false,
+        always_show_bufferline = true,
         show_buffer_close_icons = true,
         show_close_icon = false,
         color_icons = true,
@@ -136,5 +136,25 @@ return {
         winblend = 0,
       },
     },
+    config = function(_, opts)
+      require("toggleterm").setup(opts)
+      -- Define keymaps for multiple numbered terminals
+      local function set_terminal_keymaps()
+        for i = 1, 9 do
+          vim.keymap.set({ "n", "t" }, string.format("<leader>t%d", i), function()
+            require("toggleterm").toggle(i, nil, nil, "horizontal")
+          end, { desc = string.format("Toggle Terminal %d", i) })
+
+          vim.keymap.set({ "n", "t" }, string.format("<leader>v%d", i), function()
+            require("toggleterm").toggle(i, nil, nil, "vertical")
+          end, { desc = string.format("Toggle Vertical Terminal %d", i) })
+
+          vim.keymap.set({ "n", "t" }, string.format("<leader>f%d", i), function()
+            require("toggleterm").toggle(i, nil, nil, "float")
+          end, { desc = string.format("Toggle Floating Terminal %d", i) })
+        end
+      end
+      set_terminal_keymaps()
+    end,
   },
 }
