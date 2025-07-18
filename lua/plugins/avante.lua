@@ -22,16 +22,18 @@ return {
     opts = {
       provider = "copilot",
 
-      -- Ollama configuration
-      ollama = {
-        endpoint = "http://127.0.0.1:11434", -- No /v1 at the end
-        model = "codellama:latest",
-        api_key_name = "", -- Empty string for local Ollama
-      },
+      providers = {
+        -- Ollama configuration
+        ollama = {
+          endpoint = "http://127.0.0.1:11434", -- No /v1 at the end
+          model = "codellama:latest",
+          api_key_name = "", -- Empty string for local Ollama
+        },
 
-      -- Copilot-specific configuration
-      copilot = {
-        model = "claude-3.7-sonnet", -- Default model
+        -- Copilot-specific configuration
+        copilot = {
+          model = "claude-3.7-sonnet", -- Default model
+        },
       },
 
       -- Additional behavior settings

@@ -15,6 +15,7 @@
   "grug-far.nvim": { "branch": "main", "commit": "6fd719634c529bfbfe031a03b7af9d728d849dc7" },
   "guihua.lua": { "branch": "master", "commit": "87bea7b98429405caf2a0ce4d029b027bb017c70" },
   "indent-blankline.nvim": { "branch": "master", "commit": "005b56001b2cb30bfa61b7986bc50657816ba4ba" },
+  "language-tools": { "branch": "main", "commit": "2cbd3f6f01f6ed65adb56d9dcb339cfe2c599031" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "77550f2f6cbf0959ef1583d845661af075f3442b" },
   "lspkind-nvim": { "branch": "master", "commit": "d79a1c3299ad0ef94e255d045bed9fa26025dab6" },

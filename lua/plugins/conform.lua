@@ -17,18 +17,18 @@ return {
       -- Define formatters by filetype
       formatters_by_ft = {
         -- Web development
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
-        svelte = { "prettier" },
-        astro = { "prettier" },
-        css = { "prettier" },
-        html = { "prettier" },
-        json = { "prettier" },
-        yaml = { "prettier" },
-        markdown = { "prettier" },
-        graphql = { "prettier" },
+        javascript = { "prettierd", "prettier" },
+        typescript = { "prettierd", "prettier" },
+        javascriptreact = { "prettierd", "prettier" },
+        typescriptreact = { "prettierd", "prettier" },
+        svelte = { "prettierd", "prettier" },
+        astro = { "prettierd", "prettier" },
+        css = { "prettierd", "prettier" },
+        html = { "prettierd", "prettier" },
+        json = { "prettierd", "prettier" },
+        yaml = { "prettierd", "prettier" },
+        markdown = { "prettierd", "prettier" },
+        graphql = { "prettierd", "prettier" },
 
         -- Lua
         lua = { "stylua" },
@@ -112,16 +112,50 @@ return {
         prettier = {
           -- Try to find project-specific prettier config (e.g., .prettierrc)
           prepend_args = function(self, ctx)
-            if
-              vim.fs.find({ ".prettierrc", ".prettierrc.js", ".prettierrc.json", "prettier.config.js" }, {
-                upward = true,
-                path = ctx.dirname,
-                type = "file",
-              })[1] == nil
-            then
-              -- If no config found, use these args as defaults
-              return { "--prose-wrap", "always", "--print-width", "88" }
+            local args = {}
+            
+            -- Check if we have a prettier config file
+            local config_file = vim.fs.find({ ".prettierrc", ".prettierrc.js", ".prettierrc.json", "prettier.config.js" }, {
+              upward = true,
+              path = ctx.dirname,
+              type = "file",
+            })[1]
+            
+            if config_file == nil then
+              -- Default args if no config found
+              args = { "--prose-wrap", "always", "--print-width", "88" }
             end
+            
+            -- Add plugin support for Astro and Svelte
+            local filetype = vim.bo[ctx.buf].filetype
+            if filetype == "astro" then
+              table.insert(args, "--plugin")
+              table.insert(args, "prettier-plugin-astro")
+            elseif filetype == "svelte" then
+              table.insert(args, "--plugin")
+              table.insert(args, "prettier-plugin-svelte")
+            end
+            
+            return args
+          end,
+        },
+        
+        -- Customize prettierd (faster prettier daemon)
+        prettierd = {
+          prepend_args = function(self, ctx)
+            local args = {}
+            
+            -- Add plugin support for Astro and Svelte
+            local filetype = vim.bo[ctx.buf].filetype
+            if filetype == "astro" then
+              table.insert(args, "--plugin")
+              table.insert(args, "prettier-plugin-astro")
+            elseif filetype == "svelte" then
+              table.insert(args, "--plugin")
+              table.insert(args, "prettier-plugin-svelte")
+            end
+            
+            return args
           end,
         },
 

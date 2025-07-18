@@ -161,6 +161,7 @@ return {
         "typescript-language-server",
         "astro-language-server",
         "svelte-language-server",
+        "prettierd",
       }
 
       require("mason-tool-installer").setup({ ensure_installed = tools })
@@ -195,7 +196,7 @@ return {
             },
           },
         },
-        tsserver = {
+        ts_ls = {
           capabilities = capabilities,
           settings = {
             typescript = {
