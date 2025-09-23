@@ -143,7 +143,6 @@ return {
       }
 
       -- Configure LSP servers
-      local lspconfig = require("lspconfig")
       local lsp = require("lsp-zero").preset("recommended")
 
       -- Set up Mason
@@ -228,7 +227,9 @@ return {
           init_options = {
             configuration = {
               typescript = {
-                tsdk = vim.fn.expand("$HOME/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib"),
+                tsdk = vim.fn.expand(
+                  "$HOME/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib"
+                ),
               },
             },
           },
@@ -241,7 +242,7 @@ return {
       -- Server-specific configurations
       -- Set up each LSP server
       for server, config in pairs(servers) do
-        lspconfig[server].setup(config)
+        vim.lsp.config(server, config)
       end
 
       lsp.setup()

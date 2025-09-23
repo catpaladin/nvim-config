@@ -1,14 +1,5 @@
 return {
   {
-    "eldritch-theme/eldritch.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    config = function()
-      pcall(vim.cmd, "colorscheme eldritch")
-    end,
-  },
-  {
     "folke/tokyonight.nvim",
     config = function()
       require("tokyonight").setup({
@@ -25,6 +16,8 @@ return {
           colors.error = "#ff0000"
         end,
       })
+
+      pcall(vim.cmd, "colorscheme tokyonight-storm")
     end,
   },
   -- status line
@@ -37,7 +30,7 @@ return {
     config = function()
       require("lualine").setup({
         options = {
-          theme = "eldritch",
+          theme = "tokyonight",
         },
       })
     end,
