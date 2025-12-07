@@ -2,3 +2,4 @@ plugin/*
 *.backup
 *.luarc.json
 tmp
+lua/config.local.lua

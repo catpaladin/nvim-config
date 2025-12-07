@@ -1,13 +1,42 @@
 local opts = { noremap = true, silent = true }
-
 local term_opts = { silent = true }
-
--- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
---Remap space as leader key
+-- Leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
+
+-- ============================================================================
+-- LSP Keymaps (buffer-local, set on LspAttach)
+-- ============================================================================
+local M = {}
+
+function M.setup_lsp_keymaps(bufnr)
+  local bufopts = { buffer = bufnr, noremap = true, silent = true }
+
+  -- Hover and diagnostics
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", bufopts, { desc = "LSP hover" }))
+  vim.keymap.set("n", "<leader>ds", vim.diagnostic.open_float, vim.tbl_extend("force", bufopts, { desc = "Show diagnostic" }))
+
+  -- Navigation (via Telescope)
+  vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", vim.tbl_extend("force", bufopts, { desc = "Go to definition" }))
+  vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", vim.tbl_extend("force", bufopts, { desc = "Go to type definition" }))
+  vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", vim.tbl_extend("force", bufopts, { desc = "Go to implementation" }))
+  vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", vim.tbl_extend("force", bufopts, { desc = "Show references" }))
+
+  -- Symbols
+  vim.keymap.set("n", "gw", "<cmd>Telescope lsp_document_symbols<CR>", vim.tbl_extend("force", bufopts, { desc = "Document symbols" }))
+  vim.keymap.set("n", "gW", "<cmd>Telescope lsp_workspace_symbols<CR>", vim.tbl_extend("force", bufopts, { desc = "Workspace symbols" }))
+
+  -- Actions
+  vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", bufopts, { desc = "Code actions" }))
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", bufopts, { desc = "Rename symbol" }))
+
+  -- Diagnostic navigation
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", bufopts, { desc = "Previous diagnostic" }))
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", bufopts, { desc = "Next diagnostic" }))
+  vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, vim.tbl_extend("force", bufopts, { desc = "Diagnostics to loclist" }))
+end
 
 -- Modes
 --   normal_mode        = "n",
@@ -58,9 +87,9 @@ keymap("i", "jk", "<ESC>", opts)
 -- markdown preview
 keymap("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", opts)
 
--- nvim-comment
-keymap("n", "//", ":CommentToggle<cr>", opts)
-keymap("v", "//", ":CommentToggle<cr>", opts)
+-- Comment toggle (uses native gc in 0.10+)
+keymap("n", "//", "gcc", { noremap = false, silent = true })
+keymap("v", "//", "gc", { noremap = false, silent = true })
 
 -- Visual --
 -- Stay in indent mode
@@ -85,3 +114,5 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 -- Menu navigation
 keymap("c", "<C-j>", 'pumvisible() ? "\\<C-n>" : "\\<C-j>"', { expr = true, noremap = true })
 keymap("c", "<C-k>", 'pumvisible() ? "\\<C-p>" : "\\<C-k>"', { expr = true, noremap = true })
+
+return M

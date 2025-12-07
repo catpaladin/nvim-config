@@ -5,7 +5,6 @@ local options = {
   completeopt = { "menuone", "noselect" }, -- mostly just for cmp
   conceallevel = 2, -- so that `` is visible in markdown files
   fileencoding = "utf-8", -- the encoding written to a file
-  hidden = true, -- required to keep multiple buffers and open multiple buffers
   hlsearch = true, -- highlight all matches on previous search pattern
   ignorecase = true, -- ignore case in search patterns
   mouse = "a", -- allow the mouse to be used in neovim
@@ -35,7 +34,6 @@ local options = {
   scrolloff = 8, -- is one of my fav
   sidescrolloff = 8,
   guifont = "monospace:h17", -- the font used in graphical neovim applications
-  syntax = "ON", -- str:  Allow syntax highlighting
 }
 
 vim.opt.shortmess:append("c")

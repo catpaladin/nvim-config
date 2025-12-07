@@ -1,262 +1,128 @@
+local config = require("config")
+
+-- Build mason tools list based on enabled languages
+local tools = {
+  "lua_ls",
+  "stylua",
+  "prettier",
+  "prettierd",
+}
+
+if config.lang.python then
+  vim.list_extend(tools, { "pyright", "black" })
+end
+if config.lang.go then
+  table.insert(tools, "gopls")
+end
+if config.lang.typescript then
+  vim.list_extend(tools, { "eslint_d" })
+end
+if config.lang.astro then
+  table.insert(tools, "astro-language-server")
+end
+
 return {
+  -- Mason (package manager for LSP servers, formatters, linters)
   {
-    "VonHeikemen/lsp-zero.nvim",
-    branch = "v3.x",
-    lazy = true,
-    config = false,
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    build = ":MasonUpdate",
+    opts = {},
   },
+  { "williamboman/mason-lspconfig.nvim", opts = {} },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    opts = { ensure_installed = tools },
+  },
+
+  -- LSP Config
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" }, -- Load only when buffer is opened
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      -- Core Dependencies (lazy-loaded)
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "saghen/blink.cmp",
+      { "j-hui/fidget.nvim", opts = {} },
       {
-        "williamboman/mason.nvim",
-        cmd = "Mason",
-        build = ":MasonUpdate",
-      },
-      { "williamboman/mason-lspconfig.nvim" },
-      { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-      {
-        "hrsh7th/nvim-cmp",
-        event = "InsertEnter", -- Load completion only in insert mode
-        dependencies = {
-          { "roobert/tailwindcss-colorizer-cmp.nvim", lazy = true },
-          { "hrsh7th/cmp-nvim-lsp", lazy = true },
-          { "hrsh7th/cmp-path", lazy = true },
-          { "hrsh7th/cmp-buffer", lazy = true },
-          { "onsails/lspkind-nvim", lazy = true },
-          { "L3MON4D3/LuaSnip", lazy = true },
-          { "saadparwaiz1/cmp_luasnip", lazy = true },
-        },
-      },
-      {
-        "j-hui/fidget.nvim",
-        event = "LspAttach",
-      },
-      {
-        "nvimdev/lspsaga.nvim",
-        event = "LspAttach",
-      },
-      {
-        "stevearc/conform.nvim",
-        event = { "BufWritePre" },
-      },
-      {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        event = { "BufReadPost", "BufNewFile" },
-        config = function()
-          require("nvim-treesitter.configs").setup({
-            ensure_installed = {
-              "go",
-              "html",
-              "javascript",
-              "json",
-              "markdown",
-              "markdown_inline",
-              "python",
-              "rust",
-              "toml",
-              "typescript",
-              "tsx",
-              "lua",
-              "astro",
-              "svelte",
-            },
-            sync_install = false,
-            auto_install = true,
-            highlight = { enable = true },
-          })
-        end,
-      },
-      -- Language Specific (lazy-loaded by filetype)
-      {
-        "folke/neodev.nvim",
+        "folke/lazydev.nvim",
         ft = "lua",
-      },
-      {
-        "simrat39/rust-tools.nvim",
-        ft = "rust",
+        opts = {
+          library = {
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+          },
+        },
       },
     },
     config = function()
-      -- Load utility functions
-      local util = {}
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      function util.path_exists(path)
-        local file = io.open(path, "r")
-        if file then
-          file:close()
-          return true
-        end
-        return false
-      end
-
-      function util.get_python_path()
-        local venv_path = vim.fn.getcwd() .. "/.venv/bin/python"
-        return util.path_exists(venv_path) and venv_path or nil
-      end
-
-      -- Setup nvim-cmp
-      local cmp = require("cmp")
-      local has_words_before = function()
-        if vim.bo.buftype == "prompt" then
-          return false
-        end
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
-      end
-
-      cmp.setup({
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        formatting = {
-          format = function(entry, vim_item)
-            vim_item.menu = ({
-              buffer = "[Buffer]",
-              nvim_lsp = "[LSP]",
-              codeium = "[Codeium]",
-            })[entry.source.name]
-            return vim_item
-          end,
-        },
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "buffer" },
-          { name = "codeium" },
-        }),
-        mapping = require("config.keymaps").get_cmp_mappings(cmp, has_words_before),
-      })
-
-      -- LSP Setup
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem = {
-        snippetSupport = true,
-        preselectSupport = true,
-        insertReplaceSupport = true,
-        resolveSupport = {
-          properties = { "documentation", "detail", "additionalTextEdits" },
-        },
-      }
-
-      -- Configure LSP servers
-      local lsp = require("lsp-zero").preset("recommended")
-
-      -- Set up Mason
-      local tools = {
-        "lua_ls",
-        "pyright",
-        "gopls",
-        "black",
-        "stylua",
-        "prettier",
-        "eslint_d",
-        "terraformls",
-        "yamlls",
-        "rust_analyzer",
-        "typescript-language-server",
-        "astro-language-server",
-        "svelte-language-server",
-        "prettierd",
-      }
-
-      require("mason-tool-installer").setup({ ensure_installed = tools })
-      require("mason").setup()
-
-      -- Common LSP configurations
-      lsp.on_attach(function(_, bufnr)
-        require("config.keymaps").setup_lsp_keymaps(bufnr)
-      end)
-      lsp.set_server_config({
-        on_init = function(client)
-          client.server_capabilities.semanticTokensProvider = nil
+      -- LspAttach autocmd for keymaps
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client then
+            client.server_capabilities.semanticTokensProvider = nil
+          end
+          require("keymaps").setup_lsp_keymaps(args.buf)
         end,
       })
 
+      -- Server configurations
       local servers = {
-        lua_ls = lsp.nvim_lua_ls(),
-        pyright = {
+        lua_ls = {
           capabilities = capabilities,
-          before_init = function(_, config)
-            local python_path = util.get_python_path()
-            if python_path then
-              config.settings.python.pythonPath = python_path
-            end
-          end,
+          settings = {
+            Lua = {
+              runtime = { version = "LuaJIT" },
+              workspace = { checkThirdParty = false },
+              completion = { callSnippet = "Replace" },
+              telemetry = { enable = false },
+            },
+          },
         },
         yamlls = {
-          settings = {
-            yaml = {
-              validate = false,
-              format = { enable = false },
-            },
-          },
-        },
-        ts_ls = {
           capabilities = capabilities,
           settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-            javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
+            yaml = { validate = false, format = { enable = false } },
           },
         },
-        astro = {
+      }
+
+      -- Add Python LSP if enabled
+      if config.lang.python then
+        servers.pyright = {
+          capabilities = capabilities,
+          before_init = function(_, cfg)
+            local venv = vim.fn.getcwd() .. "/" .. config.paths.python_venv
+            if vim.fn.filereadable(venv) == 1 then
+              cfg.settings.python.pythonPath = venv
+            end
+          end,
+        }
+      end
+
+      -- Add Astro LSP if enabled
+      if config.lang.astro then
+        servers.astro = {
           capabilities = capabilities,
           init_options = {
             configuration = {
               typescript = {
-                tsdk = vim.fn.expand(
-                  "$HOME/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib"
-                ),
+                tsdk = vim.fn.expand(config.paths.typescript_sdk),
               },
             },
           },
-        },
-        svelte = {
-          capabilities = capabilities,
-        },
-      }
-
-      -- Server-specific configurations
-      -- Set up each LSP server
-      for server, config in pairs(servers) do
-        vim.lsp.config(server, config)
+        }
       end
 
-      lsp.setup()
+      -- Enable servers
+      for server, cfg in pairs(servers) do
+        vim.lsp.config(server, cfg)
+        vim.lsp.enable(server)
+      end
 
-      -- Additional tool configurations
-      require("neodev").setup({})
-      require("rust-tools").setup()
-      require("fidget").setup({})
-      require("lspsaga").setup({
-        ui = { border = "rounded" },
-        symbol_in_winbar = { enable = false },
-      })
-
-      -- Set up diagnostics
+      -- Diagnostics config
       vim.diagnostic.config({
         virtual_text = {
           severity = { vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN },
