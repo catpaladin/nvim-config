@@ -17,6 +17,7 @@ return {
   -- Only include settings you want to override
   codeium = true,
   claudecode = true,
+  opencode = true,
 
   lang = {
     astro = true,
@@ -35,7 +36,7 @@ Settings are deep-merged, so you only need to specify overrides. After changing,
 
 ```
 lua/plugins/
-├── coding.lua      # Completion (blink.cmp), AI (codeium)
+├── coding.lua      # Completion (blink.cmp), AI (codeium, claudecode, opencode)
 ├── editor.lua      # UI: neo-tree, bufferline, toggleterm, snacks
 ├── formatting.lua  # conform.nvim
 ├── lsp.lua         # LSP config, mason
@@ -168,6 +169,25 @@ Leader key: `<Space>`
 | `<leader>as` | v | Send selection to Claude |
 | `<leader>aa` | n | Accept diff |
 | `<leader>ad` | n | Deny diff |
+
+### OpenCode (when enabled)
+
+| Key | Mode | Description |
+|-----|------|-------------|
+| `<leader>oo` | n, t | Toggle OpenCode |
+| `<leader>oa` | n, x | Ask OpenCode (with selection/cursor) |
+| `<leader>os` | n, x | Select action (built-in prompts) |
+| `<leader>op` | n, x | Add selection to OpenCode |
+| `<leader>ob` | n | Add current buffer |
+| `<leader>ov` | n | Add visible text |
+| `<leader>od` | n | Add diagnostics |
+| `<leader>og` | n | Add git diff |
+| `<leader>oi` | n | Interrupt session |
+| `<leader>on` | n | New session |
+
+**Context Placeholders**: Use `@this`, `@buffer`, `@buffers`, `@visible`, `@diagnostics`, `@quickfix`, `@diff` in prompts.
+
+**Built-in Prompts** (via `<leader>os`): diagnostics, diff, document, explain, fix, implement, optimize, review, test.
 
 ### Other
 

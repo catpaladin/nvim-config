@@ -7,6 +7,7 @@ local defaults = {
   -- AI Assistance (set to false to disable)
   codeium = false,
   claudecode = false,
+  opencode = false,
 
   -- Language Support (set to false to disable)
   lang = {
