@@ -37,7 +37,7 @@ Settings are deep-merged, so you only need to specify overrides. After changing,
 ```
 lua/plugins/
 ├── coding.lua      # Completion (blink.cmp), AI (codeium, claudecode, opencode)
-├── editor.lua      # UI: neo-tree, bufferline, toggleterm, snacks
+├── editor.lua      # UI: bufferline, toggleterm, snacks (explorer, lazygit)
 ├── formatting.lua  # conform.nvim
 ├── lsp.lua         # LSP config, mason
 ├── telescope.lua   # Fuzzy finder
@@ -69,12 +69,12 @@ Leader key: `<Space>`
 | `J` / `K` | x | Move selected lines down/up |
 | `//` | n, v | Toggle comment |
 
-### File Explorer (Neo-tree)
+### File Explorer (Snacks Explorer) & Git (LazyGit)
 
 | Key | Mode | Description |
 |-----|------|-------------|
-| `<C-n>` | n | Toggle file explorer |
-| `<C-g>` | n | Git status (floating) |
+| `<C-n>` | n | Toggle snacks explorer |
+| `<C-g>` | n | Open LazyGit |
 
 ### Telescope
 

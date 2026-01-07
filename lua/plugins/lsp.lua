@@ -9,7 +9,7 @@ local tools = {
 }
 
 if config.lang.python then
-  vim.list_extend(tools, { "pyright", "black" })
+  vim.list_extend(tools, { "ty", "black" })
 end
 if config.lang.go then
   table.insert(tools, "gopls")
@@ -87,20 +87,17 @@ return {
             yaml = { validate = false, format = { enable = false } },
           },
         },
-      }
-
-      -- Add Python LSP if enabled
-      if config.lang.python then
-        servers.pyright = {
+        ty = {
           capabilities = capabilities,
-          before_init = function(_, cfg)
-            local venv = vim.fn.getcwd() .. "/" .. config.paths.python_venv
-            if vim.fn.filereadable(venv) == 1 then
-              cfg.settings.python.pythonPath = venv
-            end
-          end,
+          settings = {
+            configuration = {
+              rules = {
+                ["unresolved-reference"] = "warn"
+              }
+            },
+          }
         }
-      end
+      }
 
       -- Add Astro LSP if enabled
       if config.lang.astro then

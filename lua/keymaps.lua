@@ -67,11 +67,13 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
-keymap("n", "<S-q>", ":bd<CR>", opts)
+vim.keymap.set("n", "<S-q>", function()
+	Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
 
--- Neo-tree
-keymap("n", "<C-n>", ":Neotree toggle<CR>", opts)
-keymap("n", "<C-g>", ":Neotree float git_status<CR>", opts)
+-- Explorer
+vim.keymap.set("n", "<C-n>", function() Snacks.explorer() end, opts)
+vim.keymap.set("n", "<C-g>", function() Snacks.lazygit() end, opts)
 
 -- Toggleterm
 keymap("n", "<C-\\>", ":ToggleTerm<CR>", opts)
