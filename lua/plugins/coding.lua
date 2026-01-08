@@ -1,7 +1,12 @@
 local config = require("config")
 
 local plugins = {
-  -- Completion
+  {
+    "nvim-mini/mini.pairs",
+    event = "InsertEnter",
+    opts = {},
+  },
+
   {
     "saghen/blink.cmp",
     version = "1.*",
@@ -79,16 +84,20 @@ if config.claudecode then
       { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
       { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
       { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-      { "<leader>aa", function()
-        vim.cmd("ClaudeCodeDiffAccept")
-        -- Close the diff buffer after accepting
-        vim.defer_fn(function()
-          local bufname = vim.api.nvim_buf_get_name(0)
-          if bufname:match("claude%-code%-diff") or vim.bo.buftype == "nofile" then
-            vim.cmd("close")
-          end
-        end, 100)
-      end, desc = "Accept diff" },
+      {
+        "<leader>aa",
+        function()
+          vim.cmd("ClaudeCodeDiffAccept")
+          -- Close the diff buffer after accepting
+          vim.defer_fn(function()
+            local bufname = vim.api.nvim_buf_get_name(0)
+            if bufname:match("claude%-code%-diff") or vim.bo.buftype == "nofile" then
+              vim.cmd("close")
+            end
+          end, 100)
+        end,
+        desc = "Accept diff",
+      },
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
     },
   })
@@ -107,16 +116,86 @@ if config.opencode then
     end,
     keys = {
       { "<leader>o", nil, desc = "OpenCode" },
-      { "<leader>oo", function() require("opencode").toggle() end, desc = "Toggle OpenCode", mode = { "n", "t" } },
-      { "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, desc = "Ask OpenCode", mode = { "n", "x" } },
-      { "<leader>os", function() require("opencode").select() end, desc = "Select action", mode = { "n", "x" } },
-      { "<leader>op", function() require("opencode").prompt("@this") end, desc = "Add to OpenCode", mode = { "n", "x" } },
-      { "<leader>ob", function() require("opencode").prompt("@buffer") end, desc = "Add buffer", mode = "n" },
-      { "<leader>ov", function() require("opencode").prompt("@visible") end, desc = "Add visible", mode = "n" },
-      { "<leader>od", function() require("opencode").prompt("@diagnostics") end, desc = "Add diagnostics", mode = "n" },
-      { "<leader>og", function() require("opencode").prompt("@diff") end, desc = "Add git diff", mode = "n" },
-      { "<leader>oi", function() require("opencode").command("session.interrupt") end, desc = "Interrupt", mode = "n" },
-      { "<leader>on", function() require("opencode").command("session.new") end, desc = "New session", mode = "n" },
+      {
+        "<leader>oo",
+        function()
+          require("opencode").toggle()
+        end,
+        desc = "Toggle OpenCode",
+        mode = { "n", "t" },
+      },
+      {
+        "<leader>oa",
+        function()
+          require("opencode").ask("@this: ", { submit = true })
+        end,
+        desc = "Ask OpenCode",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>os",
+        function()
+          require("opencode").select()
+        end,
+        desc = "Select action",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>op",
+        function()
+          require("opencode").prompt("@this")
+        end,
+        desc = "Add to OpenCode",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>ob",
+        function()
+          require("opencode").prompt("@buffer")
+        end,
+        desc = "Add buffer",
+        mode = "n",
+      },
+      {
+        "<leader>ov",
+        function()
+          require("opencode").prompt("@visible")
+        end,
+        desc = "Add visible",
+        mode = "n",
+      },
+      {
+        "<leader>od",
+        function()
+          require("opencode").prompt("@diagnostics")
+        end,
+        desc = "Add diagnostics",
+        mode = "n",
+      },
+      {
+        "<leader>og",
+        function()
+          require("opencode").prompt("@diff")
+        end,
+        desc = "Add git diff",
+        mode = "n",
+      },
+      {
+        "<leader>oi",
+        function()
+          require("opencode").command("session.interrupt")
+        end,
+        desc = "Interrupt",
+        mode = "n",
+      },
+      {
+        "<leader>on",
+        function()
+          require("opencode").command("session.new")
+        end,
+        desc = "New session",
+        mode = "n",
+      },
     },
   })
 end

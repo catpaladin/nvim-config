@@ -11,6 +11,11 @@ return {
 			bufdelete = { enabled = true },
 			explorer = { enabled = true },
 			lazygit = { enabled = true },
+			picker = {
+				sources = {
+					explorer = { hidden = true },
+				},
+			},
 			indent = {
 				enabled = true,
 				char = "│",
