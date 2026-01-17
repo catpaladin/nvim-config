@@ -26,7 +26,7 @@ return {
 		},
 		bottom = {
 			{
-				ft = "toggleterm",
+				ft = "snacks_terminal",
 				title = "Terminal",
 				size = { height = 0.4 },
 				filter = function(buf, win)

@@ -1,4 +1,4 @@
-return {
+	return {
 	-- Notifications and UI utilities
 	{
 		"folke/snacks.nvim",
@@ -24,6 +24,11 @@ return {
 			dashboard = { enabled = false },
 			statuscolumn = { enabled = false },
 			words = { enabled = false },
+			terminal = {
+				win = {
+					wo = { winbar = "%{b:term_title}" },
+				},
+			},
 		},
 		keys = {
 			{
@@ -40,7 +45,30 @@ return {
 				end,
 				desc = "Dismiss All Notifications",
 			},
+			{
+				"<C-\\>",
+				function()
+					Snacks.terminal()
+				end,
+				desc = "Toggle Terminal",
+				mode = { "n", "t" },
+			},
 		},
+		config = function(_, opts)
+			require("snacks").setup(opts)
+
+			for i = 1, 9 do
+				vim.keymap.set({ "n", "t" }, string.format("<leader>t%d", i), function()
+					Snacks.terminal(nil, { win = { position = "bottom" }, count = i })
+				end, { desc = string.format("Toggle Terminal %d", i) })
+				vim.keymap.set({ "n", "t" }, string.format("<leader>v%d", i), function()
+					Snacks.terminal(nil, { win = { position = "right" }, count = i })
+				end, { desc = string.format("Toggle Vertical Terminal %d", i) })
+				vim.keymap.set({ "n", "t" }, string.format("<leader>f%d", i), function()
+					Snacks.terminal(vim.o.shell, { win = { position = "float" }, count = i })
+				end, { desc = string.format("Toggle Floating Terminal %d", i) })
+			end
+		end,
 	},
 
 	-- Buffer line
@@ -70,52 +98,15 @@ return {
 						highlight = "Directory",
 						text_align = "left",
 					},
+					{
+						filetype = "snacks_terminal",
+						text = "Terminal",
+						highlight = "Special",
+						text_align = "left",
+					},
 				},
 			},
 		},
-	},
-
-	-- Terminal
-	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		cmd = { "ToggleTerm", "TermExec" },
-		keys = { { "<C-\\>", "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal" } },
-		opts = {
-			size = function(term)
-				if term.direction == "horizontal" then
-					return 15
-				elseif term.direction == "vertical" then
-					return vim.o.columns * 0.4
-				end
-			end,
-			open_mapping = [[<c-\>]],
-			hide_numbers = true,
-			shade_terminals = true,
-			insert_mappings = true,
-			persist_size = true,
-			direction = "horizontal",
-			close_on_exit = true,
-			shell = vim.o.shell,
-			float_opts = {
-				border = "curved",
-				winblend = 0,
-			},
-		},
-		config = function(_, opts)
-			require("toggleterm").setup(opts)
-			for i = 1, 9 do
-				vim.keymap.set({ "n", "t" }, string.format("<leader>t%d", i), function()
-					require("toggleterm").toggle(i, nil, nil, "horizontal")
-				end, { desc = string.format("Toggle Terminal %d", i) })
-				vim.keymap.set({ "n", "t" }, string.format("<leader>v%d", i), function()
-					require("toggleterm").toggle(i, nil, nil, "vertical")
-				end, { desc = string.format("Toggle Vertical Terminal %d", i) })
-				vim.keymap.set({ "n", "t" }, string.format("<leader>f%d", i), function()
-					require("toggleterm").toggle(i, nil, nil, "float")
-				end, { desc = string.format("Toggle Floating Terminal %d", i) })
-			end
-		end,
 	},
 
 	-- Markdown rendering (in-buffer)

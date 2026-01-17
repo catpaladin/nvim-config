@@ -71,14 +71,11 @@ vim.keymap.set("n", "<S-q>", function()
 	Snacks.bufdelete()
 end, { desc = "Delete Buffer" })
 
--- Explorer
-vim.keymap.set("n", "<C-n>", function() Snacks.explorer() end, opts)
-vim.keymap.set("n", "<C-g>", function() Snacks.lazygit() end, opts)
+ -- Explorer
+ vim.keymap.set("n", "<C-n>", function() Snacks.explorer() end, opts)
+ vim.keymap.set("n", "<C-g>", function() Snacks.lazygit() end, opts)
 
--- Toggleterm
-keymap("n", "<C-\\>", ":ToggleTerm<CR>", opts)
-
--- Format
+ -- Format
 keymap("n", "<leader>f", ":Format<CR>", opts)
 keymap("n", "<leader>fw", ":FormatWrite<CR>", opts)
 

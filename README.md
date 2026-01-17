@@ -34,11 +34,11 @@ Settings are deep-merged, so you only need to specify overrides. After changing,
 
 ## Plugin Structure
 
-```
-lua/plugins/
-├── coding.lua      # Completion (blink.cmp), AI (codeium, claudecode, opencode)
-├── editor.lua      # UI: bufferline, toggleterm, snacks (explorer, lazygit)
-├── formatting.lua  # conform.nvim
+ ```
+ lua/plugins/
+ ├── coding.lua      # Completion (blink.cmp), AI (codeium, claudecode, opencode)
+ ├── editor.lua      # UI: bufferline, snacks (terminal, explorer, lazygit)
+ ├── formatting.lua  # conform.nvim
 ├── lsp.lua         # LSP config, mason
 ├── telescope.lua   # Fuzzy finder
 ├── themes.lua      # Colorscheme, statusline
@@ -115,15 +115,15 @@ Leader key: `<Space>`
 | `<C-e>` | i | Cancel completion |
 | `<C-b>` / `<C-f>` | i | Scroll documentation |
 
-### Terminal (toggleterm)
+ ### Terminal (snacks.terminal)
 
-| Key | Mode | Description |
-|-----|------|-------------|
-| `<C-\>` | n | Toggle terminal |
-| `<leader>t1-9` | n, t | Toggle horizontal terminal 1-9 |
-| `<leader>v1-9` | n, t | Toggle vertical terminal 1-9 |
-| `<leader>f1-9` | n, t | Toggle floating terminal 1-9 |
-| `<C-h/j/k/l>` | t | Navigate from terminal to windows |
+ | Key | Mode | Description |
+ |-----|------|-------------|
+ | `<C-\>` | n, t | Toggle terminal |
+ | `<leader>t1-9` | n, t | Toggle bottom terminal 1-9 |
+ | `<leader>v1-9` | n, t | Toggle right terminal 1-9 |
+ | `<leader>f1-9` | n, t | Toggle floating terminal 1-9 |
+ | `<C-h/j/k/l>` | t | Navigate from terminal to windows |
 
 ### TypeScript (when enabled)
 
