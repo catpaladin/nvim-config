@@ -67,6 +67,62 @@ if config.codeium then
   })
 end
 
+-- Cursortab (optional local AI completion)
+if config.cursortab.enabled then
+  table.insert(plugins, {
+    "leonardcser/cursortab.nvim",
+    build = "cd server && go build",
+    config = function()
+      require("cursortab").setup({
+        enabled = true,
+        log_level = "info", -- "trace", "debug", "info", "warn", "error"
+
+        ui = {
+          colors = {
+            deletion = "#4f2f2f", -- Background color for deletions
+            addition = "#394f2f", -- Background color for additions
+            modification = "#282e38", -- Background color for modifications
+            completion = "#80899c", -- Foreground color for completions
+          },
+          jump = {
+            symbol = "", -- Symbol shown for jump points
+            text = " TAB ", -- Text displayed after jump symbol
+            show_distance = true, -- Show line distance for off-screen jumps
+            bg_color = "#373b45", -- Jump text background color
+            fg_color = "#bac1d1", -- Jump text foreground color
+          },
+        },
+
+        behavior = {
+          idle_completion_delay = 50, -- Delay in ms after idle to trigger completion (-1 to disable)
+          text_change_debounce = 50, -- Debounce in ms after text change to trigger completion
+          cursor_prediction = {
+            enabled = true, -- Show jump indicators after completions
+            auto_advance = true, -- When no changes, show cursor jump to last line
+            proximity_threshold = 2, -- Min lines apart to show cursor jump (0 to disable)
+          },
+        },
+
+        provider = {
+          type = config.cursortab.provider, -- Provider: "inline", "fim", "sweep", or "zeta"
+          url = config.cursortab.provider_url, -- URL of the provider server
+          model = config.cursortab.provider_model, -- Model name
+          temperature = config.cursortab.provider_temperature, -- Sampling temperature
+          max_tokens = config.cursortab.provider_max_tokens, -- Max tokens to generate
+          top_k = config.cursortab.provider_top_k, -- Top-k sampling
+          completion_timeout = 5000, -- Timeout in ms for completion requests
+          max_diff_history_tokens = 512, -- Max tokens for diff history (0 = no limit)
+          completion_path = "/v1/completions", -- API endpoint path
+        },
+
+        debug = {
+          immediate_shutdown = true, -- Shutdown daemon immediately when no clients
+        },
+      })
+    end,
+  })
+end
+
 -- Claude Code (optional CLI integration)
 if config.claudecode then
   table.insert(plugins, {
