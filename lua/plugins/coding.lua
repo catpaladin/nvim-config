@@ -1,5 +1,40 @@
 local config = require("config")
 
+local blink_providers = {
+  lazydev = {
+    name = "LazyDev",
+    module = "lazydev.integrations.blink",
+    score_offset = 100,
+  },
+}
+local blink_sources = { "lazydev", "lsp", "path", "snippets", "buffer" }
+local blink_keymap = {
+  preset = "default",
+  ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+  ["<C-e>"] = { "hide", "fallback" },
+  ["<CR>"] = { "accept", "fallback" },
+  ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+  ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+  ["<C-p>"] = { "select_prev", "fallback" },
+  ["<C-n>"] = { "select_next", "fallback" },
+  ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+  ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+}
+
+-- Conditional append to blink if minuet enabled
+if config.minuet.enabled then
+  blink_providers.minuet = {
+    name = "minuet",
+    module = "minuet.blink",
+    async = true,
+    -- Should match minuet.config.request_timeout * 1000,
+    -- since minuet.config.request_timeout is in seconds
+    timeout_ms = 3000,
+    score_offset = 50, -- Gives minuet higher priority among suggestions
+  }
+  blink_sources[#blink_sources + 1] = "minuet"
+end
+
 local plugins = {
   {
     "nvim-mini/mini.pairs",
@@ -11,59 +46,86 @@ local plugins = {
     "saghen/blink.cmp",
     version = "1.*",
     event = "InsertEnter",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-    },
-    opts = {
-      keymap = {
-        preset = "default",
-        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<C-e>"] = { "hide", "fallback" },
-        ["<CR>"] = { "accept", "fallback" },
-        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
-        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
-        ["<C-p>"] = { "select_prev", "fallback" },
-        ["<C-n>"] = { "select_next", "fallback" },
-        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-      },
-      appearance = {
-        nerd_font_variant = "mono",
-      },
-      completion = {
-        accept = { auto_brackets = { enabled = true } },
-        menu = { border = "rounded" },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-          window = { border = "rounded" },
+    dependencies = (function()
+      local deps = { "rafamadriz/friendly-snippets" }
+      if config.minuet.enabled then
+        table.insert(deps, "milanglacier/minuet-ai.nvim")
+      end
+      return deps
+    end)(),
+    opts = function()
+      -- Add minuet keymap if enabled (safe to require minuet here since it's a dependency)
+      if config.minuet.enabled then
+        blink_keymap["<A-y>"] = require("minuet").make_blink_map()
+      end
+      return {
+        keymap = blink_keymap,
+        appearance = {
+          nerd_font_variant = "mono",
         },
-      },
-      sources = {
-        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-        providers = {
-          lazydev = {
-            name = "LazyDev",
-            module = "lazydev.integrations.blink",
-            score_offset = 100,
+        completion = {
+          accept = { auto_brackets = { enabled = true } },
+          menu = { border = "rounded" },
+          documentation = {
+            auto_show = true,
+            auto_show_delay_ms = 200,
+            window = { border = "rounded" },
           },
+          trigger = { prefetch_on_insert = false },
         },
-      },
-      snippets = { preset = "default" },
-      fuzzy = { implementation = "prefer_rust_with_warning" },
-    },
+        sources = {
+          default = blink_sources,
+          providers = blink_providers,
+        },
+        snippets = { preset = "default" },
+        fuzzy = { implementation = "prefer_rust_with_warning" },
+      }
+    end,
   },
 }
 
--- Codeium (optional AI completion)
-if config.codeium then
+-- Minuet AI (optional AI completion)
+if config.minuet.enabled then
   table.insert(plugins, {
-    "Exafunction/codeium.nvim",
-    event = "InsertEnter",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {},
+    "milanglacier/minuet-ai.nvim",
+    config = function()
+      require("minuet").setup({
+        provider = "openai_fim_compatible",
+        n_completions = 1,
+        context_window = 512,
+        provider_options = {
+          openai_fim_compatible = {
+            -- For Windows users, TERM may not be present in environment variables.
+            -- Consider using APPDATA instead.
+            api_key = "TERM",
+            name = config.minuet.name,
+            end_point = config.minuet.endpoint,
+            -- The model is set by the llama-cpp server and cannot be altered
+            -- post-launch.
+            model = config.minuet.model,
+            optional = {
+              temperature = config.minuet.temperature,
+              max_tokens = config.minuet.max_tokens,
+              top_p = config.minuet.top_p,
+              top_k = config.minuet.top_k,
+            },
+            -- Llama.cpp does not support the `suffix` option in FIM completion.
+            -- Therefore, we must disable it and manually populate the special
+            -- tokens required for FIM completion.
+            template = {
+              prompt = function(context_before_cursor, context_after_cursor, _)
+                return "<|fim_prefix|>"
+                  .. context_before_cursor
+                  .. "<|fim_suffix|>"
+                  .. context_after_cursor
+                  .. "<|fim_middle|>"
+              end,
+              suffix = false,
+            },
+          },
+        },
+      })
+    end,
   })
 end
 

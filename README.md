@@ -16,9 +16,19 @@ Default settings are in `lua/config.lua`. To customize without affecting git, cr
 -- lua/config.local.lua
 return {
   -- Only include settings you want to override
-  codeium = false,
   claudecode = true,
   opencode = true,
+
+  minuet = {
+    enabled = true,
+    name = "Llama.cpp",
+    endpoint = "http://localhost:8012/v1/completions",
+    model = "qwen2.5-coder:7b",
+    temperature = 0.0,
+    max_tokens = 256,
+    top_p = 0.9,
+    top_k = 50,
+  },
 
   cursortab = {
     enabled = true,
@@ -48,7 +58,7 @@ Neovim and run `:Lazy sync`.
 
 ```
 lua/plugins/
-├── coding.lua      # Completion (blink.cmp), AI (codeium, claudecode, opencode)
+├── coding.lua      # Completion (blink.cmp), AI (minuet, cursortab, claudecode, opencode)
 ├── editor.lua      # UI: bufferline, snacks (terminal, explorer, lazygit)
 ├── formatting.lua  # conform.nvim
 ├── lsp.lua         # LSP config, mason
@@ -126,6 +136,7 @@ Leader key: `<Space>`
 | `<CR>`              | i    | Accept completion              |
 | `<C-e>`             | i    | Cancel completion              |
 | `<C-b>` / `<C-f>`   | i    | Scroll documentation           |
+| `<A-y>`             | i    | Manual minuet AI completion    |
 
 ### Terminal (snacks.terminal)
 
