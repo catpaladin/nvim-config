@@ -9,7 +9,7 @@ local tools = {
 }
 
 if config.lang.python then
-  vim.list_extend(tools, { "ty", "black" })
+  vim.list_extend(tools, { "ty", "black", "ruff" })
 end
 if config.lang.go then
   table.insert(tools, "gopls")
@@ -96,7 +96,17 @@ return {
               }
             },
           }
-        }
+        },
+        ruff = {
+          capabilities = capabilities,
+          init_options = {
+            settings = {
+              lint = {
+                select = { "E", "F", "I", "W", "UP" },
+              },
+            },
+          },
+        },
       }
 
       -- Add Astro LSP if enabled
