@@ -13,7 +13,7 @@
 			lazygit = { enabled = true },
 			picker = {
 				sources = {
-					explorer = { hidden = true },
+					explorer = { hidden = true, ignored = true },
 				},
 			},
 			indent = {
@@ -24,11 +24,7 @@
 			dashboard = { enabled = false },
 			statuscolumn = { enabled = false },
 			words = { enabled = false },
-			terminal = {
-				win = {
-					wo = { winbar = "%{b:term_title}" },
-				},
-			},
+			terminal = { win = { wo = { winbar = "" } } },
 		},
 		keys = {
 			{

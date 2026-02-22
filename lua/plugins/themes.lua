@@ -39,7 +39,19 @@ return {
 			local lualine_sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics" },
-				lualine_c = { "filename" },
+				lualine_c = {
+					{
+						function()
+							local title = vim.b.term_title or ""
+							return title:gsub("term://.*//%d+:", "")
+						end,
+						cond = function()
+							return vim.bo.buftype == "terminal"
+						end,
+						icon = "",
+					},
+					"filename",
+				},
 				lualine_x = { "encoding", "fileformat", "filetype" },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
