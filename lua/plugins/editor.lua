@@ -24,7 +24,13 @@ return {
       dashboard = { enabled = false },
       statuscolumn = { enabled = false },
       words = { enabled = false },
-      terminal = { win = { wo = { winbar = "" } } },
+      terminal = {
+        win = {
+          wo = { winbar = "" },
+          border = "rounded",
+          padding = { top = 1, bottom = 1, left = 2, right = 2 },
+        },
+      },
     },
     keys = {
       {
@@ -61,7 +67,7 @@ return {
           Snacks.terminal(nil, { win = { position = "right" }, count = i })
         end, { desc = string.format("Toggle Vertical Terminal %d", i) })
         vim.keymap.set({ "n", "t" }, string.format("<leader>f%d", i), function()
-          Snacks.terminal(vim.o.shell, { win = { position = "float" }, count = i })
+          Snacks.terminal(vim.o.shell, { win = { position = "float", backdrop = 60 }, count = i })
         end, { desc = string.format("Toggle Floating Terminal %d", i) })
       end
     end,
