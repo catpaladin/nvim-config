@@ -75,16 +75,13 @@ end, { desc = "Delete Buffer" })
  vim.keymap.set("n", "<C-n>", function() Snacks.explorer() end, opts)
  vim.keymap.set("n", "<C-g>", function() Snacks.lazygit() end, opts)
 
- -- Format
-keymap("n", "<leader>f", ":Format<CR>", opts)
-keymap("n", "<leader>fw", ":FormatWrite<CR>", opts)
+ -- Format (conform.nvim handles <leader>fm)
 
 -- Insert --
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
 
--- markdown preview
-keymap("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", opts)
+ -- markdown preview (render-markdown.nvim handles <leader>mp)
 
 -- Comment toggle (uses native gc in 0.10+)
 keymap("n", "//", "gcc", { noremap = false, silent = true })

@@ -9,7 +9,7 @@ local tools = {
 }
 
 if config.lang.python then
-  vim.list_extend(tools, { "ty", "black", "ruff" })
+  vim.list_extend(tools, { "ty", "ruff" })
 end
 if config.lang.go then
   table.insert(tools, "gopls")

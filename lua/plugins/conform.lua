@@ -48,13 +48,7 @@ return {
 				end,
 
 				-- Python
-				python = function(bufnr)
-					local conform = require("conform")
-					if conform.get_formatter_info("ruff_format", bufnr).available then
-						return { "ruff_format" }
-					end
-					return { "isort", "black" }
-				end,
+				python = { "ruff_fix", "ruff_format" },
 
 				-- Shell
 				sh = { "shfmt" },

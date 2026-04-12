@@ -24,27 +24,6 @@ return {
   claudecode = true,
   opencode = true,
 
-  minuet = {
-    enabled = true,
-    name = "Llama.cpp",
-    endpoint = "http://localhost:8012/v1/completions",
-    model = "qwen2.5-coder:7b",
-    temperature = 0.0,
-    max_tokens = 256,
-    top_p = 0.9,
-    top_k = 50,
-  },
-
-  cursortab = {
-    enabled = true,
-    provider = "sweep",
-    provider_url = "http://localhost:1234",
-    provider_model = "sweep-next-edit-1.5b",
-    provider_temperature = 0.0,
-    provider_max_tokens = 512,
-    provider_top_k = 50,
-  },
-
   lang = {
     astro = true,
     rust = true,
@@ -63,13 +42,13 @@ Neovim and run `:Lazy sync`.
 
 ```
 lua/plugins/
-├── coding.lua      # Completion (blink.cmp), AI (minuet, cursortab, claudecode, opencode)
+├── coding.lua      # Completion (blink.cmp), AI (claudecode, opencode)
+├── conform.lua     # Formatting (conform.nvim)
 ├── editor.lua      # UI: bufferline, snacks (terminal, explorer, lazygit)
-├── formatting.lua  # conform.nvim
 ├── lsp.lua         # LSP config, mason
 ├── telescope.lua   # Fuzzy finder
 ├── themes.lua      # Colorscheme, statusline
-├── treesitter.lua  # Syntax highlighting
+├── window.lua      # Window layout (edgy.nvim)
 └── lang/           # Language-specific (toggleable)
    ├── go.lua
    ├── typescript.lua
@@ -141,7 +120,6 @@ Leader key: `<Space>`
 | `<CR>`              | i    | Accept completion              |
 | `<C-e>`             | i    | Cancel completion              |
 | `<C-b>` / `<C-f>`   | i    | Scroll documentation           |
-| `<A-y>`             | i    | Manual minuet AI completion    |
 
 ### Terminal (snacks.terminal)
 
@@ -177,12 +155,11 @@ Leader key: `<Space>`
 | `<leader>gat` | n    | Add struct tags    |
 | `<leader>grm` | n    | Remove struct tags |
 
-### Formatting
+### Formatting (conform.nvim)
 
 | Key          | Mode | Description      |
 | ------------ | ---- | ---------------- |
-| `<leader>f`  | n    | Format           |
-| `<leader>fw` | n    | Format and write |
+| `<leader>fm` | n    | Format buffer    |
 
 ### Claude Code (when enabled)
 
