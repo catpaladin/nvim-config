@@ -4,8 +4,13 @@ Developer settings for my development and DevOps tasks. Maybe it will work for y
 
 ## Requirements
 
-- Neovim >= 0.11+
+- Neovim >= 0.12+
 - A [Nerd Font](https://www.nerdfonts.com/) for icons
+- tree-sitter-cli
+
+```
+cargo install tree-sitter-cli
+```
 
 ## Configuration
 

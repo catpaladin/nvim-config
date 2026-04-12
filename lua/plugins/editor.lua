@@ -19,7 +19,7 @@
 			indent = {
 				enabled = true,
 				char = "│",
-				scope = { enabled = true },
+				scope = { enabled = false },
 			},
 			dashboard = { enabled = false },
 			statuscolumn = { enabled = false },
@@ -110,7 +110,6 @@
 		"MeanderingProgrammer/render-markdown.nvim",
 		ft = { "markdown" },
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons",
 		},
 		keys = {

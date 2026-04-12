@@ -51,7 +51,6 @@ return {
   -- ESLint
   {
     "mfussenegger/nvim-lint",
-    event = { "BufReadPre", "BufNewFile" },
     ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
     config = function()
       require("lint").linters_by_ft = {
