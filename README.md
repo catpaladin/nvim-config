@@ -38,6 +38,24 @@ return {
 Settings are deep-merged, so you only need to specify overrides. After changing, restart
 Neovim and run `:Lazy sync`.
 
+## Treesitter Parsers
+
+Neovim 0.12+ includes built-in treesitter highlighting — no plugin needed. These parsers are
+bundled and work out of the box:
+
+lua, typescript, javascript, python, go, rust, bash, html, json, toml, yaml, markdown
+
+For languages not bundled (astro, svelte, markdown_inline, etc.), install them manually:
+
+```vim
+:TSInstall astro
+:TSInstall svelte
+:TSInstall markdown_inline
+```
+
+This requires `tree-sitter-cli` (listed above under Requirements). Run `:TSInstall <lang>`
+once per parser — it persists across restarts.
+
 ## Plugin Structure
 
 ```
