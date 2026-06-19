@@ -16,6 +16,7 @@ local defaults = {
     astro = false,
     rust = false,
     python = true,
+    terraform = true,
   },
 
   -- Paths (adjust for your system)

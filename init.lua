@@ -1,5 +1,6 @@
 require("keymaps")
 require("options")
+require("filetypes")
 
 -- Enable built-in treesitter highlighting (Neovim 0.12+)
 vim.api.nvim_create_autocmd("FileType", {

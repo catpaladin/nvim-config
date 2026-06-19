@@ -54,6 +54,12 @@ return {
 				sh = { "shfmt" },
 				bash = { "shfmt" },
 
+				-- Terraform / OpenTofu / Terragrunt
+				terraform = { "terraform_fmt", "tofu_fmt" },
+				["terraform-vars"] = { "terraform_fmt", "tofu_fmt" },
+				opentofu = { "tofu_fmt", "terraform_fmt" },
+				terragrunt = { "terragrunt_hclfmt" },
+
 				-- Misc
 				["_"] = { "trim_whitespace" }, -- Apply to all filetypes
 			},

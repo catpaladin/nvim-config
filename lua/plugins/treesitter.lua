@@ -32,6 +32,9 @@ end
 if config.lang.astro then
   table.insert(parsers, "astro")
 end
+if config.lang.terraform then
+  vim.list_extend(parsers, { "terraform", "hcl" })
+end
 
 return {
   {

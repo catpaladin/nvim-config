@@ -20,6 +20,9 @@ end
 if config.lang.astro then
   table.insert(tools, "astro-language-server")
 end
+if config.lang.terraform then
+  table.insert(tools, "terraform-ls")
+end
 
 return {
   -- Mason (package manager for LSP servers, formatters, linters)
@@ -119,6 +122,19 @@ return {
                 tsdk = vim.fn.expand(config.paths.typescript_sdk),
               },
             },
+          },
+        }
+      end
+
+      -- Add Terraform LSP if enabled
+      if config.lang.terraform then
+        servers.terraformls = {
+          capabilities = capabilities,
+          -- terraform-ls also handles OpenTofu (.tofu) files
+          filetypes = { "terraform", "terraform-vars", "opentofu" },
+          init_options = {
+            terraformModuleIndexing = true,
+            terraformValidation = true,
           },
         }
       end

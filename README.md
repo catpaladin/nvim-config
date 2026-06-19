@@ -71,7 +71,8 @@ lua/plugins/
    ├── go.lua
    ├── typescript.lua
    ├── astro.lua
-   └── rust.lua
+   ├── rust.lua
+   └── terraform.lua    # Terraform, OpenTofu, Terragrunt
 ```
 
 ## Keymaps
